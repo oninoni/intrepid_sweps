@@ -16,6 +16,6 @@
 --        PADD Entity | Client       --
 ---------------------------------------
 
-SWEP.Category = "Star Trek"
+SWEP.Category = "Star Trek (Utilities)"
 
 SWEP.DrawAmmo = false
