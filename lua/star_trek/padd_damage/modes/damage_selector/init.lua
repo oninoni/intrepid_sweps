@@ -21,10 +21,6 @@ MODE.BaseMode = "base"
 MODE.Name = "Damage Selector"
 MODE.MenuColor = Star_Trek.LCARS.ColorRed
 
-function MODE:CanActivate(ent)
-	return false
-end
-
 function MODE:Activate(ent)
 	local ply = ent:GetOwner()
 	if not IsValid(ply) then
@@ -47,7 +43,6 @@ function MODE:Deactivate(ent, callback)
 end
 
 function MODE:PrimaryAttack(ent)
-	ent:EnableScreenClicker(true)
 end
 
 function MODE:SecondaryAttack(ent)

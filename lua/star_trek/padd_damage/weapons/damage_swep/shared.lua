@@ -37,20 +37,23 @@ SWEP.CustomViewModel = "models/oninoni/star_trek/props/padd.mdl"
 SWEP.CustomViewModelBone = "ValveBiped.Bip01_R_Hand"
 SWEP.CustomViewModelOffset = Vector(4, -10.5, -1)
 SWEP.CustomViewModelAngle = Angle(-55, -85, 90)
+SWEP.CustomViewModelScale = 2
 
 SWEP.CustomDrawWorldModel = true
 SWEP.CustomWorldModelBone = "ValveBiped.Bip01_R_Hand"
 SWEP.CustomWorldModelOffset = Vector(3, -6, -7)
 SWEP.CustomWorldModelAngle = Angle(0, -90, 90)
+SWEP.CustomWorldModelScale = 1
 
 
 SWEP.MenuOffset = Vector(0, -1.8, 0.3)
 SWEP.MenuAngle = Angle(0, 180, 0)
 
-SWEP.MenuScale = 55
+SWEP.MenuScale = 110
 SWEP.MenuWidth = 550
 SWEP.MenuHeight = 690
 SWEP.MenuName = "DMG PADD"
+SWEP.MenuMouseOffset = Vector(365, 60, 0)
 
 SWEP.Modes = {
 	"damage_selector"

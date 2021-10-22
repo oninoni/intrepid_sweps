@@ -31,10 +31,6 @@ function SELF:Open(ent, modes)
 				Data = modeName,
 			}
 
-			if isfunction(modeData.CanActivate) and not modeData:CanActivate(ent) then
-				button.Disabled = true
-			end
-
 			table.insert(buttons, button)
 		end
 	end
@@ -44,8 +40,6 @@ function SELF:Open(ent, modes)
 		Name = "Close",
 	})
 
-	ent:EnableScreenClicker(true)
-
 	local success, window = Star_Trek.LCARS:CreateWindow(
 		"button_list",
 		Vector(),
@@ -54,8 +48,6 @@ function SELF:Open(ent, modes)
 		ent.MenuWidth,
 		ent.MenuHeight,
 		function(windowData, interfaceData, buttonId)
-			ent:EnableScreenClicker(false)
-
 			interfaceData:Close(function()
 				if buttonId < buttonCount + 1 then
 					local buttonData = windowData.Buttons[buttonId]

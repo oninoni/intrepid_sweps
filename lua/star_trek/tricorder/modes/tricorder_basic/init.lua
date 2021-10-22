@@ -13,25 +13,26 @@
 ---------------------------------------
 
 ---------------------------------------
---   LCARS SWEP Mode: Base | Server  --
+--     Tricorder - Basic | Server    --
 ---------------------------------------
 
-MODE.BaseMode = nil
+MODE.BaseMode = "base"
 
-MODE.Name = "Base"
+MODE.Name = "Basic Tricorder"
 MODE.MenuColor = Star_Trek.LCARS.ColorBlue
 
 function MODE:Activate(ent)
-	return false, "Not Implemented"
+
 end
 
 function MODE:Deactivate(ent, callback)
-	callback()
-	return false, "Not Implemented"
+
 end
 
 function MODE:PrimaryAttack(ent)
+
 end
 
 function MODE:SecondaryAttack(ent)
+
 end

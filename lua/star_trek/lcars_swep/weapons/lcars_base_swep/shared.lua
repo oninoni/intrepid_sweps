@@ -49,13 +49,13 @@ SWEP.CustomViewModel = false
 SWEP.CustomViewModelBone = "ValveBiped.Bip01_R_Hand"
 SWEP.CustomViewModelOffset = Vector()
 SWEP.CustomViewModelAngle = Angle()
+SWEP.CustomViewModelScale = 1
 
 SWEP.CustomDrawWorldModel = false
 SWEP.CustomWorldModelBone = "ValveBiped.Bip01_R_Hand"
 SWEP.CustomWorldModelOffset = Vector()
 SWEP.CustomWorldModelAngle = Angle()
-
-SWEP.CustomScale = 1
+SWEP.CustomWorldModelScale = 1
 
 SWEP.Primary.Ammo = ""
 SWEP.Primary.ClipSize = 0
@@ -72,10 +72,11 @@ SWEP.IsLCARS = true
 SWEP.MenuOffset = Vector()
 SWEP.MenuAngle = Angle()
 
-SWEP.MenuScale = 50
+SWEP.MenuScale = 100
 SWEP.MenuWidth = 300
 SWEP.MenuHeight = 400
 SWEP.MenuName = "LCARS"
+SWEP.MenuMouseOffset = Vector(0, 0, 0)
 
 SWEP.Modes = {}
 SWEP.DefaultMode = false

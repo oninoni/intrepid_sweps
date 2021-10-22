@@ -17,6 +17,9 @@
 ---------------------------------------
 
 function SWEP:InitializeCustom()
+	self.NextScreenEnable = CurTime()
+	self.ScreenClickerEnabled = false
+
 	self.ActiveMode = false
 	self.ModeCache = {}
 end
@@ -29,27 +32,36 @@ function SWEP:Deploy()
 	end
 end
 
-function SWEP:OnDrop()
-	--if self.ActiveMode then
-	--	self:DeactivateMode()
-	--end
-end
-
 function SWEP:Reload()
 	if not IsFirstTimePredicted() then return end
 
-	local interfaceData = Star_Trek.LCARS.ActiveInterfaces[self]
-	if istable(interfaceData) and interfaceData.InterfaceName == "mode_selection" then return end
+	local owner = self:GetOwner()
 
-	if self.ActiveMode then
-		self:DeactivateMode(function()
-			Star_Trek.LCARS:OpenInterface(self:GetOwner(), self, "mode_selection", self.Modes)
-		end)
-	else
-		Star_Trek.LCARS:CloseInterface(self, function()
-			Star_Trek.LCARS:OpenInterface(self:GetOwner(), self, "mode_selection", self.Modes)
-		end)
+	-- Ignore when SPEED Active (Interact Menu)
+	if owner:KeyDown(IN_SPEED) then
+		return
 	end
+
+	if self.NextScreenEnable < CurTime() then
+		if owner:KeyDown(IN_WALK) then
+			-- Enable / Disable mode Selection when pressing ALT.
+			if self.ActiveMode then
+				self:DeactivateMode(function()
+					Star_Trek.LCARS:OpenInterface(self:GetOwner(), self, "mode_selection", self.Modes)
+				end)
+			else
+				local interfaceData = Star_Trek.LCARS.ActiveInterfaces[self]
+				if not istable(interfaceData) then
+					Star_Trek.LCARS:OpenInterface(self:GetOwner(), self, "mode_selection", self.Modes)
+				end
+			end
+		else
+			-- Enable Screen Clicker.
+			self:EnableScreenClicker()
+		end
+	end
+
+	self.NextScreenEnable = CurTime() + 0.1
 end
 
 function SWEP:PrimaryAttack()
@@ -102,12 +114,31 @@ end
 
 util.AddNetworkString("Star_Trek.LCARS_SWEP.EnableScreenClicker")
 function SWEP:EnableScreenClicker(enabled)
-	local ply = self:GetOwner()
+	enabled = enabled or (not self.ScreenClickerEnabled)
+
+	if enabled == self.ScreenClickerEnabled then
+		return
+	end
+
+	local interfaceData = Star_Trek.LCARS.ActiveInterfaces[self]
+	if enabled and not istable(interfaceData) then
+		return
+	end
 
 	self.ScreenClickerEnabled = enabled
-
 	net.Start("Star_Trek.LCARS_SWEP.EnableScreenClicker")
-		net.WriteEntity(self)
 		net.WriteBool(enabled)
-	net.Send(ply)
+	net.Send(self:GetOwner())
 end
+
+hook.Add("PlayerDroppedWeapon", "Star_Trek.LCARS_SWEP.ResetScreenClicker", function(ply, weapon)
+	if weapon.IsLCARS then
+		weapon:EnableScreenClicker(false)
+	end
+end)
+
+hook.Add("PlayerSwitchWeapon", "Star_Trek.LCARS_SWEP.ResetScreenClicker", function(ply, weapon)
+	if weapon.IsLCARS then
+		weapon:EnableScreenClicker(false)
+	end
+end)

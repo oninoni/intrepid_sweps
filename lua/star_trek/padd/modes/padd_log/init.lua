@@ -13,17 +13,13 @@
 ---------------------------------------
 
 ---------------------------------------
---   LCARS SWEP Mode: Logs | Server  --
+--         Logs Mode | Server        --
 ---------------------------------------
 
 MODE.BaseMode = "base"
 
 MODE.Name = "Logs"
 MODE.MenuColor = Star_Trek.LCARS.ColorBlue
-
-function MODE:CanActivate(ent)
-	return true
-end
 
 function MODE:Activate(ent)
 	local ply = ent:GetOwner()

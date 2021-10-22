@@ -16,14 +16,6 @@
 --        LCARS SWEP | Server        --
 ---------------------------------------
 
---[[
-hook.Add("Star_Trek.LCARS.IsPrivate", "Star_Trek.LCARS_SWEP.MakePrivate", function(ply, ent, interfaceData)
-	if IsValid(ent) and ent:IsWeapon() and ent.IsLCARS then
-		return true
-	end
-end)
-]]
-
 -- Load a given mode.
 --
 -- @param String moduleName
@@ -59,6 +51,14 @@ function Star_Trek.LCARS_SWEP:LoadMode(moduleName, modeDirectory, modeName)
 
 	return true
 end
+
+hook.Add("Star_Trek.LCARS.PostOpenInterface", "Star_Trek.LCARS_SWEP.UpdateScreenClicker",  function(ent)
+	ent:EnableScreenClicker(true)
+end)
+
+hook.Add("Star_Trek.LCARS.PostCloseInterface", "Star_Trek.LCARS_SWEP.UpdateScreenClicker", function(ent)
+	ent:EnableScreenClicker(false)
+end)
 
 hook.Add("Star_Trek.LoadModule", "Star_Trek.LCARS_SWEP.LoadModes", function(moduleName, moduleDirectory)
 	Star_Trek.LCARS_SWEP.Modes = Star_Trek.LCARS_SWEP.Modes or {}

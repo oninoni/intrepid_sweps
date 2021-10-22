@@ -37,8 +37,6 @@ function SELF:Open(ent, title, lines)
 				else
 					ent:EmitSound("star_trek.lcars_error")
 				end
-
-				ent:EnableScreenClicker(false)
 			end
 		end,
 		Star_Trek.LCARS:GetSectionCategories(),
