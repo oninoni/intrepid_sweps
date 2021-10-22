@@ -57,7 +57,7 @@ function SWEP:Reload()
 			end
 		else
 			-- Enable Screen Clicker.
-			self:EnableScreenClicker()
+			self:ToggleScreenClicker()
 		end
 	end
 
@@ -113,9 +113,7 @@ function SWEP:DeactivateMode(callback)
 end
 
 util.AddNetworkString("Star_Trek.LCARS_SWEP.EnableScreenClicker")
-function SWEP:EnableScreenClicker(enabled)
-	enabled = enabled or (not self.ScreenClickerEnabled)
-
+function SWEP:SetScreenClicker(enabled)
 	if enabled == self.ScreenClickerEnabled then
 		return
 	end
@@ -131,14 +129,36 @@ function SWEP:EnableScreenClicker(enabled)
 	net.Send(self:GetOwner())
 end
 
+function SWEP:ToggleScreenClicker()
+	self:SetScreenClicker(not self.ScreenClickerEnabled)
+end
+
 hook.Add("PlayerDroppedWeapon", "Star_Trek.LCARS_SWEP.ResetScreenClicker", function(ply, weapon)
 	if weapon.IsLCARS then
-		weapon:EnableScreenClicker(false)
+		weapon:SetScreenClicker(false)
 	end
 end)
 
 hook.Add("PlayerSwitchWeapon", "Star_Trek.LCARS_SWEP.ResetScreenClicker", function(ply, weapon)
 	if weapon.IsLCARS then
-		weapon:EnableScreenClicker(false)
+		weapon:SetScreenClicker(false)
+	end
+end)
+
+hook.Add("KeyPress", "Star_Trek.LCARS_SWEP.ResetScreenClicker", function(ply, key)
+	if key == IN_SCORE then
+		local weapon = ply:GetActiveWeapon()
+		if weapon.IsLCARS then
+			weapon:SetScreenClicker(false)
+		end
+	end
+end)
+
+hook.Add("KeyRelease", "Star_Trek.LCARS_SWEP.ResetScreenClicker", function(ply, key)
+	if key == IN_SCORE then
+		local weapon = ply:GetActiveWeapon()
+		if weapon.IsLCARS then
+			weapon:SetScreenClicker(false)
+		end
 	end
 end)

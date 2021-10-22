@@ -45,13 +45,13 @@ SWEP.CustomWorldModelOffset = Vector(3, -6, -7)
 SWEP.CustomWorldModelAngle = Angle(0, -90, 90)
 SWEP.CustomWorldModelScale = 1
 
-SWEP.MenuOffset = Vector(0, -1.8, 0.3)
+SWEP.MenuOffset = Vector(0, -0.9, 0.15)
 SWEP.MenuAngle = Angle(0, 180, 0)
 
 SWEP.MenuScale = 110
 SWEP.MenuWidth = 550
 SWEP.MenuHeight = 690
-SWEP.MenuName = "Tricorder"
+SWEP.MenuName = "PADD"
 SWEP.MenuMouseOffset = Vector(365, 60, 0)
 
 SWEP.Modes = {

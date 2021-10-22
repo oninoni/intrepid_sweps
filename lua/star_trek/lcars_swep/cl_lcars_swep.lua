@@ -83,7 +83,7 @@ hook.Add("Star_Trek.LCARS.PreventRender", "Star_Trek.LCARS_SWEP.PreventRender", 
 	end
 end)
 
-function Star_Trek.LCARS_SWEP:EnableScreenClicker(enabled)
+function Star_Trek.LCARS_SWEP:SetScreenClicker(enabled)
 	gui.EnableScreenClicker(enabled)
 
 	if enabled then
@@ -100,5 +100,5 @@ function Star_Trek.LCARS_SWEP:EnableScreenClicker(enabled)
 end
 
 net.Receive("Star_Trek.LCARS_SWEP.EnableScreenClicker", function()
-	Star_Trek.LCARS_SWEP:EnableScreenClicker(net.ReadBool())
+	Star_Trek.LCARS_SWEP:SetScreenClicker(net.ReadBool())
 end)
