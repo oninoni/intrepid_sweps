@@ -5,3 +5,5 @@ This Addon Requires 2 additional Systems to work an combines them into Complex S
 
 - https://github.com/oninoni/intrepid
 - https://github.com/oninoni/swep_base_oni
+
+Currently NOT Released since it is higly Experimental.
