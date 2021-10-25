@@ -7,3 +7,6 @@ This Addon Requires 2 additional Systems to work an combines them into Complex S
 - https://github.com/oninoni/swep_base_oni
 
 Currently NOT Released since it is higly Experimental.
+
+Models Used are packaged into this content pack. Will be released as seperate pack, when this addon is released on the workshop:
+- https://steamcommunity.com/sharedfiles/filedetails/?id=2610547944
