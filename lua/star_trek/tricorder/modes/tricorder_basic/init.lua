@@ -29,8 +29,15 @@ function MODE:Deactivate(ent, callback)
 
 end
 
-function MODE:HandleScanData(scanData)
-	PrintTable(scanData)
+function MODE:ScanEntity(ent)
+	if not IsValid(ent) then
+		return
+	end
+
+	local success, scanData = Star_Trek.Sensors:ScanEntity(ent)
+	if success then
+		PrintTable(scanData)
+	end
 end
 
 function MODE:PrimaryAttack(ent)
@@ -40,17 +47,9 @@ function MODE:PrimaryAttack(ent)
 	end
 
 	local trace = owner:GetEyeTrace()
-	if IsValid(trace.Entity) then
-		local success, scanData = Star_Trek.Sensors:ScanEntity(trace.Entity)
-		if success then
-			self:HandleScanData(scanData)
-		end
-	end
+	self:ScanEntity(trace.Entity)
 end
 
 function MODE:SecondaryAttack(ent)
-	local success, scanData = Star_Trek.Sensors:ScanEntity(ent)
-	if success then
-		self:HandleScanData(scanData)
-	end
+	self:ScanEntity(ent)
 end

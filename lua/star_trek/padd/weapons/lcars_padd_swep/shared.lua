@@ -33,6 +33,8 @@ SWEP.SlotPos = 42
 
 SWEP.WorldModel = "models/oninoni/star_trek/props/padd.mdl"
 
+SWEP.HoldType = "slam"
+
 SWEP.CustomViewModel = "models/oninoni/star_trek/props/padd.mdl"
 SWEP.CustomViewModelBone = "ValveBiped.Bip01_R_Hand"
 SWEP.CustomViewModelOffset = Vector(4, -10.5, -1)
@@ -41,7 +43,7 @@ SWEP.CustomViewModelScale = 2
 
 SWEP.CustomDrawWorldModel = true
 SWEP.CustomWorldModelBone = "ValveBiped.Bip01_R_Hand"
-SWEP.CustomWorldModelOffset = Vector(3, -6, -7)
+SWEP.CustomWorldModelOffset = Vector(4.5, -4, -2)
 SWEP.CustomWorldModelAngle = Angle(0, -90, 90)
 SWEP.CustomWorldModelScale = 1
 

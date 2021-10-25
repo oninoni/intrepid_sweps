@@ -31,28 +31,28 @@ SWEP.AdminOnly = false
 SWEP.Slot = 3
 SWEP.SlotPos = 42
 
-SWEP.WorldModel = "models/oninoni/star_trek/props/padd.mdl"
+SWEP.WorldModel = "models/ef2weapons/tricorder_stx/tricorder.mdl"
 
-SWEP.CustomViewModel = "models/oninoni/star_trek/props/padd.mdl"
+SWEP.CustomViewModel = "models/ef2weapons/tricorder_stx/tricorder.mdl"
 SWEP.CustomViewModelBone = "ValveBiped.Bip01_R_Hand"
-SWEP.CustomViewModelOffset = Vector(4, -10.5, -1)
-SWEP.CustomViewModelAngle = Angle(-55, -85, 90)
+SWEP.CustomViewModelOffset = Vector(4, -8, -1)
+SWEP.CustomViewModelAngle = Angle(0, 180, -35)
 SWEP.CustomViewModelScale = 2
 
 SWEP.CustomDrawWorldModel = true
 SWEP.CustomWorldModelBone = "ValveBiped.Bip01_R_Hand"
-SWEP.CustomWorldModelOffset = Vector(3, -6, -7)
-SWEP.CustomWorldModelAngle = Angle(0, -90, 90)
+SWEP.CustomWorldModelOffset = Vector(4, -3, -2)
+SWEP.CustomWorldModelAngle = Angle(0, 180, -90)
 SWEP.CustomWorldModelScale = 1
 
-SWEP.MenuOffset = Vector(0, -0.9, 0.15)
-SWEP.MenuAngle = Angle(0, 180, 0)
+SWEP.MenuOffset = Vector(1, 0, 0)
+SWEP.MenuAngle = Angle(90, 0, 0)
 
-SWEP.MenuScale = 110
-SWEP.MenuWidth = 550
-SWEP.MenuHeight = 690
+SWEP.MenuScale = 100
+SWEP.MenuWidth = 400
+SWEP.MenuHeight = 650
 SWEP.MenuName = "PADD"
-SWEP.MenuMouseOffset = Vector(365, 60, 0)
+SWEP.MenuMouseOffset = Vector(450, 150, 0)
 
 SWEP.Modes = {
 	"tricorder_basic"
