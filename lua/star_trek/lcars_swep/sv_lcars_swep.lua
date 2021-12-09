@@ -52,14 +52,6 @@ function Star_Trek.LCARS_SWEP:LoadMode(moduleName, modeDirectory, modeName)
 	return true
 end
 
-hook.Add("Star_Trek.LCARS.PostOpenInterface", "Star_Trek.LCARS_SWEP.UpdateScreenClicker",  function(ent)
-	ent:SetScreenClicker(true)
-end)
-
-hook.Add("Star_Trek.LCARS.PostCloseInterface", "Star_Trek.LCARS_SWEP.UpdateScreenClicker", function(ent)
-	ent:SetScreenClicker(false)
-end)
-
 hook.Add("Star_Trek.LoadModule", "Star_Trek.LCARS_SWEP.LoadModes", function(moduleName, moduleDirectory)
 	Star_Trek.LCARS_SWEP.Modes = Star_Trek.LCARS_SWEP.Modes or {}
 

@@ -99,6 +99,14 @@ function Star_Trek.LCARS_SWEP:SetScreenClicker(enabled)
 	end
 end
 
+hook.Add("Star_Trek.LCARS.PreventButton", "Star_Trek.LCARS_SWEP.PreventButton", function(interface)
+	local ent = interface.Ent
+
+	if IsValid(ent) and ent:IsWeapon() and ent.IsLCARS and not IsValid(Star_Trek.LCARS_SWEP.Panel) then
+		return true
+	end
+end)
+
 net.Receive("Star_Trek.LCARS_SWEP.EnableScreenClicker", function()
 	Star_Trek.LCARS_SWEP:SetScreenClicker(net.ReadBool())
 end)

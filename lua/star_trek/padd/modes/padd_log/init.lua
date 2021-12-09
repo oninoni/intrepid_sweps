@@ -64,5 +64,16 @@ function MODE:PrimaryAttack(ent)
 end
 
 function MODE:SecondaryAttack(ent)
-	-- TODO: Upload to Screen
+	if not istable(ent.Interface) then return end
+
+	local ply = ent:GetOwner()
+	if not IsValid(ply) then return end
+
+	local targetEnt = ply:GetEyeTrace().Entity
+	if not IsValid(targetEnt) then return end
+
+	local data = ent.Interface:GetData()
+	if istable(targetEnt.Interface) and isfunction(targetEnt.Interface.SetData) then
+		targetEnt.Interface:SetData(data)
+	end
 end

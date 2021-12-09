@@ -133,6 +133,18 @@ function SWEP:ToggleScreenClicker()
 	self:SetScreenClicker(not self.ScreenClickerEnabled)
 end
 
+hook.Add("Star_Trek.LCARS.PostOpenInterface", "Star_Trek.LCARS_SWEP.UpdateScreenClicker",  function(ent)
+	if ent.IsLCARS then
+		ent:SetScreenClicker(true)
+	end
+end)
+
+hook.Add("Star_Trek.LCARS.PostCloseInterface", "Star_Trek.LCARS_SWEP.UpdateScreenClicker", function(ent)
+	if ent.IsLCARS then
+		ent:SetScreenClicker(false)
+	end
+end)
+
 hook.Add("PlayerDroppedWeapon", "Star_Trek.LCARS_SWEP.ResetScreenClicker", function(ply, weapon)
 	if weapon.IsLCARS then
 		weapon:SetScreenClicker(false)
