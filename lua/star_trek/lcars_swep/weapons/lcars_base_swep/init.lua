@@ -18,7 +18,6 @@
 
 function SWEP:InitializeCustom()
 	self.NextScreenEnable = CurTime()
-	self.ScreenClickerEnabled = false
 
 	self.ActiveMode = false
 	self.ModeCache = {}
@@ -57,7 +56,7 @@ function SWEP:Reload()
 			end
 		else
 			-- Enable Screen Clicker.
-			self:ToggleScreenClicker()
+			Star_Trek.LCARS_SWEP:ToggleScreenClicker()
 		end
 	end
 
@@ -111,66 +110,3 @@ function SWEP:DeactivateMode(callback)
 
 	callback()
 end
-
-util.AddNetworkString("Star_Trek.LCARS_SWEP.EnableScreenClicker")
-function SWEP:SetScreenClicker(enabled)
-	if enabled == self.ScreenClickerEnabled then
-		return
-	end
-
-	local interfaceData = Star_Trek.LCARS.ActiveInterfaces[self]
-	if enabled and not istable(interfaceData) then
-		return
-	end
-
-	self.ScreenClickerEnabled = enabled
-	net.Start("Star_Trek.LCARS_SWEP.EnableScreenClicker")
-		net.WriteBool(enabled)
-	net.Send(self:GetOwner())
-end
-
-function SWEP:ToggleScreenClicker()
-	self:SetScreenClicker(not self.ScreenClickerEnabled)
-end
-
-hook.Add("Star_Trek.LCARS.PostOpenInterface", "Star_Trek.LCARS_SWEP.UpdateScreenClicker",  function(ent)
-	if ent.IsLCARS then
-		ent:SetScreenClicker(true)
-	end
-end)
-
-hook.Add("Star_Trek.LCARS.PostCloseInterface", "Star_Trek.LCARS_SWEP.UpdateScreenClicker", function(ent)
-	if ent.IsLCARS then
-		ent:SetScreenClicker(false)
-	end
-end)
-
-hook.Add("PlayerDroppedWeapon", "Star_Trek.LCARS_SWEP.ResetScreenClicker", function(ply, weapon)
-	if weapon.IsLCARS then
-		weapon:SetScreenClicker(false)
-	end
-end)
-
-hook.Add("PlayerSwitchWeapon", "Star_Trek.LCARS_SWEP.ResetScreenClicker", function(ply, weapon)
-	if weapon.IsLCARS then
-		weapon:SetScreenClicker(false)
-	end
-end)
-
-hook.Add("KeyPress", "Star_Trek.LCARS_SWEP.ResetScreenClicker", function(ply, key)
-	if key == IN_SCORE then
-		local weapon = ply:GetActiveWeapon()
-		if weapon.IsLCARS then
-			weapon:SetScreenClicker(false)
-		end
-	end
-end)
-
-hook.Add("KeyRelease", "Star_Trek.LCARS_SWEP.ResetScreenClicker", function(ply, key)
-	if key == IN_SCORE then
-		local weapon = ply:GetActiveWeapon()
-		if weapon.IsLCARS then
-			weapon:SetScreenClicker(false)
-		end
-	end
-end)

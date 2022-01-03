@@ -16,6 +16,67 @@
 --        LCARS SWEP | Server        --
 ---------------------------------------
 
+util.AddNetworkString("Star_Trek.LCARS_SWEP.EnableScreenClicker")
+function Star_Trek.LCARS_SWEP:SetScreenClicker(ply, enabled, showCursor)
+	if enabled == (self.ScreenClickerEnabled or false) then
+		return
+	end
+
+	self.ScreenClickerEnabled = enabled
+	net.Start("Star_Trek.LCARS_SWEP.EnableScreenClicker")
+		net.WriteBool(enabled)
+		net.WriteBool(showCursor or false)
+	net.Send(ply)
+end
+
+function Star_Trek.LCARS_SWEP:ToggleScreenClicker(ply, showCursor)
+	local enabled = self.ScreenClickerEnabled or false
+
+	self:SetScreenClicker(ply, not enabled, showCursor)
+end
+
+hook.Add("Star_Trek.LCARS.PostOpenInterface", "Star_Trek.LCARS_SWEP.UpdateScreenClicker",  function(ent)
+	if ent.IsLCARS then
+		Star_Trek.LCARS_SWEP:SetScreenClicker(ent:GetOwner(), true)
+	end
+end)
+
+hook.Add("Star_Trek.LCARS.PostCloseInterface", "Star_Trek.LCARS_SWEP.UpdateScreenClicker", function(ent)
+	if ent.IsLCARS then
+		Star_Trek.LCARS_SWEP:SetScreenClicker(ent:GetOwner(), false)
+	end
+end)
+
+hook.Add("PlayerDroppedWeapon", "Star_Trek.LCARS_SWEP.ResetScreenClicker", function(ply, weapon)
+	if weapon.IsLCARS then
+		Star_Trek.LCARS_SWEP:SetScreenClicker(weapon:GetOwner(), false)
+	end
+end)
+
+hook.Add("PlayerSwitchWeapon", "Star_Trek.LCARS_SWEP.ResetScreenClicker", function(ply, weapon)
+	if weapon.IsLCARS then
+		Star_Trek.LCARS_SWEP:SetScreenClicker(weapon:GetOwner(), false)
+	end
+end)
+
+hook.Add("KeyPress", "Star_Trek.LCARS_SWEP.ResetScreenClicker", function(ply, key)
+	if key == IN_SCORE then
+		local weapon = ply:GetActiveWeapon()
+		if weapon.IsLCARS then
+			Star_Trek.LCARS_SWEP:SetScreenClicker(ply, false)
+		end
+	end
+end)
+
+hook.Add("KeyRelease", "Star_Trek.LCARS_SWEP.ResetScreenClicker", function(ply, key)
+	if key == IN_SCORE then
+		local weapon = ply:GetActiveWeapon()
+		if weapon.IsLCARS then
+			Star_Trek.LCARS_SWEP:SetScreenClicker(ply, false)
+		end
+	end
+end)
+
 -- Load a given mode.
 --
 -- @param String moduleName
@@ -52,12 +113,14 @@ function Star_Trek.LCARS_SWEP:LoadMode(moduleName, modeDirectory, modeName)
 	return true
 end
 
-hook.Add("Star_Trek.LoadModule", "Star_Trek.LCARS_SWEP.LoadModes", function(moduleName, moduleDirectory)
+hook.Add("Star_Trek.ModuleLoaded", "Star_Trek.LCARS_SWEP.LoadModes", function(moduleName, moduleDirectory)
 	Star_Trek.LCARS_SWEP.Modes = Star_Trek.LCARS_SWEP.Modes or {}
 
 	local modeDirectory = moduleDirectory .. "modes/"
 	local _, modeDirectories = file.Find(modeDirectory .. "*", "LUA")
 	for _, modeName in pairs(modeDirectories) do
+		print(modeName)
+
 		local success, error = Star_Trek.LCARS_SWEP:LoadMode(moduleName, modeDirectory, modeName)
 		if success then
 			Star_Trek:Message("Loaded LCARS Mode Type \"" .. modeName .. "\" from module " .. moduleName)

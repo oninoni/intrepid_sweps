@@ -83,21 +83,28 @@ hook.Add("Star_Trek.LCARS.PreventRender", "Star_Trek.LCARS_SWEP.PreventRender", 
 	end
 end)
 
-function Star_Trek.LCARS_SWEP:SetScreenClicker(enabled)
+function Star_Trek.LCARS_SWEP:SetScreenClicker(enabled, showCursor)
 	gui.EnableScreenClicker(enabled)
 
+	if IsValid(self.Panel) then
+		self.Panel:Remove()
+	end
+	
 	if enabled then
 		self.Panel = vgui.Create("DPanel")
 		self.Panel:SetSize(ScrW(), ScrH())
-		self.Panel:SetCursor("blank")
 		function self.Panel:Paint(ww, hh)
 		end
-	else
-		if IsValid(self.Panel) then
-			self.Panel:Remove()
+		
+		if not showCursor then
+			self.Panel:SetCursor("blank")
 		end
 	end
 end
+
+net.Receive("Star_Trek.LCARS_SWEP.EnableScreenClicker", function()
+	Star_Trek.LCARS_SWEP:SetScreenClicker(net.ReadBool(), net.ReadBool())
+end)
 
 hook.Add("Star_Trek.LCARS.PreventButton", "Star_Trek.LCARS_SWEP.PreventButton", function(interface)
 	local ent = interface.Ent
@@ -105,8 +112,4 @@ hook.Add("Star_Trek.LCARS.PreventButton", "Star_Trek.LCARS_SWEP.PreventButton", 
 	if IsValid(ent) and ent:IsWeapon() and ent.IsLCARS and not IsValid(Star_Trek.LCARS_SWEP.Panel) then
 		return true
 	end
-end)
-
-net.Receive("Star_Trek.LCARS_SWEP.EnableScreenClicker", function()
-	Star_Trek.LCARS_SWEP:SetScreenClicker(net.ReadBool())
 end)
