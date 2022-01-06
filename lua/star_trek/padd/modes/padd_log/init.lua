@@ -58,8 +58,10 @@ function MODE:PrimaryAttack(ent)
 		data = targetEnt.Interface:GetData()
 	end
 
+	if targetEnt.Interface.Class == "wallpanel" then return end
+
 	if data and data.LogData then
-		ent.Interface:SetData((data.LogTitle or "Generic") .. " Logs", data.LogData)
+		ent.Interface:SetData((data.LogTitle or "Logs"), data.LogData)
 	end
 end
 
@@ -72,8 +74,8 @@ function MODE:SecondaryAttack(ent)
 	local targetEnt = ply:GetEyeTrace().Entity
 	if not IsValid(targetEnt) then return end
 
-	local data = ent.Interface:GetData()
+	local title, lines = ent.Interface:GetData()
 	if istable(targetEnt.Interface) and isfunction(targetEnt.Interface.SetData) then
-		targetEnt.Interface:SetData(data)
+		targetEnt.Interface:SetData(title or "Logs", lines)
 	end
 end

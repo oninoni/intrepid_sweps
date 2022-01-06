@@ -56,7 +56,10 @@ function SWEP:Reload()
 			end
 		else
 			-- Enable Screen Clicker.
-			Star_Trek.LCARS_SWEP:ToggleScreenClicker(owner)
+			local interfaceData = Star_Trek.LCARS.ActiveInterfaces[self]
+			if istable(interfaceData) then
+				Star_Trek.LCARS_SWEP:ToggleScreenClicker(owner)
+			end
 		end
 	end
 

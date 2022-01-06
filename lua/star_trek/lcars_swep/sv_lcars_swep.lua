@@ -49,13 +49,13 @@ end)
 
 hook.Add("PlayerDroppedWeapon", "Star_Trek.LCARS_SWEP.ResetScreenClicker", function(ply, weapon)
 	if weapon.IsLCARS then
-		Star_Trek.LCARS_SWEP:SetScreenClicker(weapon:GetOwner(), false)
+		Star_Trek.LCARS_SWEP:SetScreenClicker(ply, false)
 	end
 end)
 
 hook.Add("PlayerSwitchWeapon", "Star_Trek.LCARS_SWEP.ResetScreenClicker", function(ply, weapon)
 	if weapon.IsLCARS then
-		Star_Trek.LCARS_SWEP:SetScreenClicker(weapon:GetOwner(), false)
+		Star_Trek.LCARS_SWEP:SetScreenClicker(ply, false)
 	end
 end)
 
