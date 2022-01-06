@@ -119,8 +119,6 @@ hook.Add("Star_Trek.ModuleLoaded", "Star_Trek.LCARS_SWEP.LoadModes", function(mo
 	local modeDirectory = moduleDirectory .. "modes/"
 	local _, modeDirectories = file.Find(modeDirectory .. "*", "LUA")
 	for _, modeName in pairs(modeDirectories) do
-		print(modeName)
-
 		local success, error = Star_Trek.LCARS_SWEP:LoadMode(moduleName, modeDirectory, modeName)
 		if success then
 			Star_Trek:Message("Loaded LCARS Mode Type \"" .. modeName .. "\" from module " .. moduleName)
