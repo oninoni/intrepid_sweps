@@ -3,7 +3,7 @@ You can freely use this content for your server. But please consider contributin
 
 This Addon Requires 2 additional Systems to work an combines them into Complex SWEPs
 
-- https://github.com/oninoni/intrepid
+- https://github.com/oninoni/startrekmodules
 - https://github.com/oninoni/swep_base_oni
 
 Currently NOT Released since it is higly Experimental.
