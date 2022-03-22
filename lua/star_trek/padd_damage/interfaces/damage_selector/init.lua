@@ -19,6 +19,8 @@
 local SELF = INTERFACE
 SELF.BaseInterface = "base"
 
+SELF.LogType = false
+
 function SELF:Open(ent, title, lines)
 	local success, window = Star_Trek.LCARS:CreateWindow(
 		"category_list",

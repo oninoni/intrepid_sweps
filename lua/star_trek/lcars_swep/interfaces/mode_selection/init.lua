@@ -19,6 +19,8 @@
 local SELF = INTERFACE
 SELF.BaseInterface = "base"
 
+SELF.LogType = false
+
 function SELF:Open(ent, modes)
 	local buttons = {}
 
