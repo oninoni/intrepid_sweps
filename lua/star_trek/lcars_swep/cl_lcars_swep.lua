@@ -89,13 +89,13 @@ function Star_Trek.LCARS_SWEP:SetScreenClicker(enabled, showCursor)
 	if IsValid(self.Panel) then
 		self.Panel:Remove()
 	end
-	
+
 	if enabled then
 		self.Panel = vgui.Create("DPanel")
 		self.Panel:SetSize(ScrW(), ScrH())
 		function self.Panel:Paint(ww, hh)
 		end
-		
+
 		if not showCursor then
 			self.Panel:SetCursor("blank")
 		end

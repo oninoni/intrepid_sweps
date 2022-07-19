@@ -53,6 +53,7 @@ SWEP.MenuWidth = 400
 SWEP.MenuHeight = 650
 SWEP.MenuName = "PADD"
 SWEP.MenuMouseOffset = Vector(450, 150, 0)
+SWEP.MenuSolid = true
 
 SWEP.Modes = {
 	"tricorder_basic"

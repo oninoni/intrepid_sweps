@@ -77,6 +77,7 @@ SWEP.MenuWidth = 300
 SWEP.MenuHeight = 400
 SWEP.MenuName = "LCARS"
 SWEP.MenuMouseOffset = Vector(0, 0, 0)
+SWEP.MenuSolid = false
 
 SWEP.Modes = {}
 SWEP.DefaultMode = false

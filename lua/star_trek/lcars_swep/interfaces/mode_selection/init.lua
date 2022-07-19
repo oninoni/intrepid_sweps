@@ -49,7 +49,7 @@ function SELF:Open(ent, modes)
 		ent.MenuScale,
 		ent.MenuWidth,
 		ent.MenuHeight,
-		function(windowData, interfaceData, buttonId)
+		function(windowData, interfaceData, ply, buttonId)
 			interfaceData:Close(function()
 				if buttonId < buttonCount + 1 then
 					local buttonData = windowData.Buttons[buttonId]

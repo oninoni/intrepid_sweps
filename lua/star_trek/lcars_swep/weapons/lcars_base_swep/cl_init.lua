@@ -44,26 +44,27 @@ function SWEP:GetPosAngle(world)
 	return LocalToWorld(self.MenuOffset * scale, self.MenuAngle, pos, ang)
 end
 
-function SWEP:DrawWindow()
+function SWEP:DrawViewModelCustom(flags)
 	local interface = Star_Trek.LCARS.ActiveInterfaces[self.InterfaceId]
 	if istable(interface) then
-		interface.IVis = true
-
-		render.SuppressEngineLighting(true)
-
-		local iPos, iAng = self:GetPosAngle()
-		for _, window in pairs(interface.Windows) do
-			window.WPosG, window.WAngG = LocalToWorld(window.WPos, window.WAng, iPos, iAng)
-			window.WVis = true
-
-			Star_Trek.LCARS:DrawWindow(window, interface.AnimPos, (not interface.Closing) and IsValid(Star_Trek.LCARS_SWEP.Panel))
+		if not interface.IVis then
+			return
 		end
 
-		surface.SetAlphaMultiplier(1)
-		render.SuppressEngineLighting(false)
-	end
-end
+		if hook.Run("Star_Trek.LCARS.PreventRender", interface, true) then
+			return
+		end
 
-function SWEP:DrawViewModelCustom(flags)
-	self:DrawWindow()
+		if not interface.Solid then
+			render.OverrideBlend(true, BLEND_SRC_ALPHA, BLEND_ONE, BLENDFUNC_ADD, BLEND_SRC_ALPHA, BLEND_ONE, BLENDFUNC_ADD)
+		end
+
+		for _, window in pairs(interface.Windows) do
+			Star_Trek.LCARS:DrawWindow(window, interface.AnimPos, not interface.Closing and IsValid(Star_Trek.LCARS_SWEP.Panel))
+		end
+
+		render.OverrideBlend(false)
+
+		surface.SetAlphaMultiplier(1)
+	end
 end

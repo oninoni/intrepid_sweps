@@ -35,9 +35,13 @@ function Star_Trek.LCARS_SWEP:ToggleScreenClicker(ply, showCursor)
 	self:SetScreenClicker(ply, not enabled, showCursor)
 end
 
-hook.Add("Star_Trek.LCARS.PostOpenInterface", "Star_Trek.LCARS_SWEP.UpdateScreenClicker",  function(ent)
+hook.Add("Star_Trek.LCARS.OpenInterface", "Star_Trek.LCARS_SWEP.UpdateScreenClicker",  function(interfaceData, ply)
+	local ent = interfaceData.Ent
+
 	if ent.IsLCARS then
 		Star_Trek.LCARS_SWEP:SetScreenClicker(ent:GetOwner(), true)
+
+		interfaceData.Solid = ent.MenuSolid
 	end
 end)
 
