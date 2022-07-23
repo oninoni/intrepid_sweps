@@ -42,24 +42,14 @@ function SWEP:Reload()
 	end
 
 	if self.NextScreenEnable < CurTime() then
-		if owner:KeyDown(IN_WALK) then
-			-- Enable / Disable mode Selection when pressing ALT.
-			if self.ActiveMode then
-				self:DeactivateMode(function()
-					Star_Trek.LCARS:OpenInterface(self:GetOwner(), self, "mode_selection", self.Modes)
-				end)
-			else
-				local interfaceData = Star_Trek.LCARS.ActiveInterfaces[self]
-				if not istable(interfaceData) then
-					Star_Trek.LCARS:OpenInterface(self:GetOwner(), self, "mode_selection", self.Modes)
-				end
-			end
+		-- Enable Screen Clicker.
+		local interfaceData = Star_Trek.LCARS.ActiveInterfaces[self]
+		if istable(interfaceData) then
+			Star_Trek.LCARS_SWEP:ToggleScreenClicker(owner)
+
+			return
 		else
-			-- Enable Screen Clicker.
-			local interfaceData = Star_Trek.LCARS.ActiveInterfaces[self]
-			if istable(interfaceData) then
-				Star_Trek.LCARS_SWEP:ToggleScreenClicker(owner)
-			end
+			Star_Trek.LCARS:OpenInterface(self:GetOwner(), self, "mode_selection", self.Modes)
 		end
 	end
 
@@ -68,7 +58,16 @@ end
 
 function SWEP:PrimaryAttack()
 	if not IsFirstTimePredicted() then return end
-	if not self.ActiveMode then return end
+
+	if not self.ActiveMode then
+		local interfaceData = Star_Trek.LCARS.ActiveInterfaces[self]
+		if not istable(interfaceData) then
+			Star_Trek.LCARS:OpenInterface(self:GetOwner(), self, "mode_selection", self.Modes)
+		end
+
+		return
+	end
+
 	if not isfunction(self.ActiveMode.PrimaryAttack) then return end
 
 	self.ActiveMode:PrimaryAttack(self)
@@ -76,7 +75,16 @@ end
 
 function SWEP:SecondaryAttack()
 	if not IsFirstTimePredicted() then return end
-	if not self.ActiveMode then return end
+
+	if not self.ActiveMode then
+		local interfaceData = Star_Trek.LCARS.ActiveInterfaces[self]
+		if not istable(interfaceData) then
+			Star_Trek.LCARS:OpenInterface(self:GetOwner(), self, "mode_selection", self.Modes)
+		end
+
+		return
+	end
+
 	if not isfunction(self.ActiveMode.SecondaryAttack) then return end
 
 	self.ActiveMode:SecondaryAttack(self)
