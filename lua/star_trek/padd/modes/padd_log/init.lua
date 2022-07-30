@@ -21,34 +21,15 @@ MODE.BaseMode = "base"
 MODE.Name = "Logs"
 MODE.MenuColor = Star_Trek.LCARS.ColorBlue
 
-function MODE:Activate(ent)
-	local ply = ent:GetOwner()
-	if not IsValid(ply) then
-		return false, "Invalid Owner"
-	end
-
+function MODE:Activate(ply, ent)
 	Star_Trek.LCARS:OpenInterface(ply, ent, "padd_log", self.LogData)
-
-	return true
 end
 
-function MODE:Deactivate(ent, callback)
+function MODE:Deactivate(ent)
 	local padInterface = ent.Interface
 	if istable(padInterface) then
-		local logWindow = padInterface.Windows[1]
-		if istable(logWindow) then
-			self.LogData = logWindow.SessionData
-		end
-
-		padInterface:Close(callback)
-		return true
+		self.LogData = padInterface:GetSessionData()
 	end
-
-	if isfunction(callback) then
-		callback()
-	end
-
-	return true
 end
 
 function MODE:PrimaryAttack(ent)
@@ -110,7 +91,6 @@ function MODE:PrimaryAttack(ent)
 		sessionData = Star_Trek.Logs:GetSession(targetEnt)
 	end
 
-	print(sessionData)
 	if not sessionData then return end
 
 	logWindow:SetSessionData(sessionData)

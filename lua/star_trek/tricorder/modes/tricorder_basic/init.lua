@@ -18,15 +18,15 @@
 
 MODE.BaseMode = "base"
 
-MODE.Name = "Basic Tricorder"
+MODE.Name = "Basic Scanner"
 MODE.MenuColor = Star_Trek.LCARS.ColorBlue
 
-function MODE:Activate(ent)
-
+function MODE:Activate(ply, ent)
+	Star_Trek.LCARS:OpenInterface(ply, ent, "tricorder_basic", {})
 end
 
-function MODE:Deactivate(ent, callback)
-
+function MODE:Deactivate(ent)
+	return
 end
 
 function MODE:ScanEntity(ent)

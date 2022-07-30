@@ -21,13 +21,12 @@ MODE.BaseMode = nil
 MODE.Name = "Base"
 MODE.MenuColor = Star_Trek.LCARS.ColorBlue
 
-function MODE:Activate(ent)
-	return false, "Not Implemented"
+function MODE:Activate(ply, ent)
+	return
 end
 
-function MODE:Deactivate(ent, callback)
-	callback()
-	return false, "Not Implemented"
+function MODE:Deactivate(ent)
+	return
 end
 
 function MODE:PrimaryAttack(ent)

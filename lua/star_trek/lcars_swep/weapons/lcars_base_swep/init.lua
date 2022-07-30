@@ -105,7 +105,12 @@ function SWEP:ActivateMode(modeName)
 			end
 		end
 
-		mode:Activate(self) -- TODO Process the Return Values
+		local ply = self:GetOwner()
+		if not IsValid(ply) then
+			return
+		end
+
+		mode:Activate(ply, self) -- TODO Process the Return Values
 
 		self.ActiveMode = mode
 	end)
@@ -113,11 +118,18 @@ end
 
 function SWEP:DeactivateMode(callback)
 	if istable(self.ActiveMode) then
-		self.ActiveMode:Deactivate(self, callback) -- TODO Process the Return Values
+		self.ActiveMode:Deactivate(self) -- TODO Process the Return Values
 		self.ActiveMode = false
+	end
+
+	local interface = self.Interface
+	if istable(interface) then
+		interface:Close(callback)
 
 		return
 	end
 
-	callback()
+	if isfunction(callback) then
+		callback()
+	end
 end

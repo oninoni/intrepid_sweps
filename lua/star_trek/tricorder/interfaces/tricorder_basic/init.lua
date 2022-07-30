@@ -13,7 +13,7 @@
 ---------------------------------------
 
 ---------------------------------------
---      LCARS PADD Logs | Server     --
+--         Tricorder | Server        --
 ---------------------------------------
 
 local SELF = INTERFACE
@@ -21,7 +21,7 @@ SELF.BaseInterface = "base"
 
 SELF.LogType = false
 
-function SELF:Open(ent, sessionData)
+function SELF:Open(ent)
 	local success, window = Star_Trek.LCARS:CreateWindow(
 		"log_entry",
 		Vector(),
@@ -36,20 +36,9 @@ function SELF:Open(ent, sessionData)
 		Color(255, 255, 255)
 	)
 
-	if istable(sessionData) then
-		window:SetSessionData(sessionData)
-	end
-
 	if not success then
 		return false, window
 	end
 
 	return true, {window}
-end
-
-function SELF:GetSessionData()
-	local window = self.Windows[1]
-	if istable(window) then
-		return window.SessionData
-	end
 end
