@@ -55,16 +55,17 @@ function SWEP:DrawViewModelCustom(flags)
 			return
 		end
 
-		if not interface.Solid then
-			render.OverrideBlend(true, BLEND_SRC_ALPHA, BLEND_ONE, BLENDFUNC_ADD, BLEND_SRC_ALPHA, BLEND_ONE, BLENDFUNC_ADD)
-		end
-
 		for _, window in pairs(interface.Windows) do
+			if not interface.Solid and not window.Solid then
+				render.OverrideBlend(true, BLEND_SRC_ALPHA, BLEND_ONE, BLENDFUNC_ADD, BLEND_SRC_ALPHA, BLEND_ONE, BLENDFUNC_ADD)
+			else
+				render.OverrideBlend(false)
+			end
+
 			Star_Trek.LCARS:DrawWindow(window, interface.AnimPos, not interface.Closing and IsValid(Star_Trek.LCARS_SWEP.Panel))
 		end
 
 		render.OverrideBlend(false)
-
 		surface.SetAlphaMultiplier(1)
 	end
 end
