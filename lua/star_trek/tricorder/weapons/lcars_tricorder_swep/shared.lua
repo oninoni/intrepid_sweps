@@ -23,7 +23,7 @@ SWEP.PrintName = "TR-590 Tricorder X"
 SWEP.Author = "Oninoni"
 SWEP.Contact = "Discord: Oninoni#8830"
 SWEP.Purpose = "Multifunctional device"
-SWEP.Instructions = "Select from installed functions using R"
+SWEP.Instructions = "Press R, to activate. Hold R, to disable."
 
 SWEP.Spawnable = true
 SWEP.AdminOnly = false

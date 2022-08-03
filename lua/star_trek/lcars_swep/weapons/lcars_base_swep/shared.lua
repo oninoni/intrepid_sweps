@@ -23,7 +23,7 @@ SWEP.PrintName = "LCARS Base SWEP"
 SWEP.Author = "Oninoni"
 SWEP.Contact = "Discord: Oninoni#8830"
 SWEP.Purpose = "Base Entity, that allows the usage of LCARS Interfaces on the Viewmodel."
-SWEP.Instructions = "Use as Base for other Entities."
+SWEP.Instructions = "Press R, to activate. Hold R, to disable."
 
 SWEP.Spawnable = false
 SWEP.AdminOnly = false

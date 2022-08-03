@@ -17,7 +17,7 @@
 ---------------------------------------
 
 function SWEP:InitializeCustom()
-	self.NextScreenEnable = CurTime()
+	self.LastReload = CurTime()
 
 	self.ActiveMode = false
 	self.ModeCache = {}
@@ -41,19 +41,28 @@ function SWEP:Reload()
 		return
 	end
 
-	if self.NextScreenEnable < CurTime() then
-		-- Enable Screen Clicker.
+	if (self.LastReload + 0.1) < CurTime() then
 		local interfaceData = Star_Trek.LCARS.ActiveInterfaces[self]
 		if istable(interfaceData) then
 			Star_Trek.LCARS_SWEP:ToggleScreenClicker(owner)
-
-			return
 		else
 			Star_Trek.LCARS:OpenInterface(self:GetOwner(), self, "mode_selection", self.Modes)
 		end
+	else
+		self.HoldTime = (self.HoldTime or 0) + (CurTime() - self.LastReload)
+
+		local interfaceData = Star_Trek.LCARS.ActiveInterfaces[self]
+		if self.HoldTime > 1 and istable(interfaceData) then
+			self:DeactivateMode()
+
+			self.HoldTime = 0
+			self.LastReload = CurTime() + 1
+
+			return
+		end
 	end
 
-	self.NextScreenEnable = CurTime() + 0.1
+	self.LastReload = CurTime()
 end
 
 function SWEP:PrimaryAttack()
