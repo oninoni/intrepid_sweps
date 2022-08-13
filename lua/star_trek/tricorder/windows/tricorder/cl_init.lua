@@ -49,6 +49,8 @@ function SELF:OnPress(pos, animPos)
 end
 
 function SELF:OnDraw(pos, animPos)
+	draw.RoundedBox(0, self.Area1X - 4, self.Area1Y - 4, self.Area1Width + 4, self.Area1Height + 4, Color(0, 0, 0, 255 * animPos))
+
 	SELF.Base.OnDraw(self, pos, animPos)
 
 	local lastScan = self.LastScan

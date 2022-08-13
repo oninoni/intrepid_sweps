@@ -35,7 +35,7 @@ SWEP.WorldModel = "models/ef2weapons/tricorder_stx/tricorder.mdl"
 
 SWEP.CustomViewModel = "models/ef2weapons/tricorder_stx/tricorder.mdl"
 SWEP.CustomViewModelBone = "ValveBiped.Bip01_R_Hand"
-SWEP.CustomViewModelOffset = Vector(4, -8, -1)
+SWEP.CustomViewModelOffset = Vector(3, -9, -1)
 SWEP.CustomViewModelAngle = Angle(0, 180, -35)
 SWEP.CustomViewModelScale = 2
 

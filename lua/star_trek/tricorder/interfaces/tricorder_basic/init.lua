@@ -19,7 +19,8 @@
 local SELF = INTERFACE
 SELF.BaseInterface = "base"
 
-SELF.LogType = false
+SELF.LogType = "Tricorder Scan"
+SELF.LogMobile = true
 
 function SELF:Open(ent)
 	local success, window = Star_Trek.LCARS:CreateWindow(

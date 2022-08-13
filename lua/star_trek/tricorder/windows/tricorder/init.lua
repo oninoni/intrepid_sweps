@@ -20,7 +20,7 @@ if not istable(WINDOW) then Star_Trek:LoadAllModules() return end
 local SELF = WINDOW
 
 function SELF:OnCreate(color, hFlip)
-	local success = SELF.Base.OnCreate(self, color, "Tricorder", "TRI", hFlip, {})
+	local success = SELF.Base.OnCreate(self, false, color, hFlip)
 	if not success then
 		return false
 	end

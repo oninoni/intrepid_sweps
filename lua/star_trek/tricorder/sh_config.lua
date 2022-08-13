@@ -16,5 +16,8 @@
 --         Tricorder | Config        --
 ---------------------------------------
 
--- Basic scan time of the tricorder
+-- Scan time of the tricorder
 Star_Trek.Tricorder.ScanTime = 5
+
+-- Range of the tricorder
+Star_Trek.Tricorder.ScanRange = 200

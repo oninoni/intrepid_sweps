@@ -18,7 +18,7 @@
 
 MODE.BaseMode = "base"
 
-MODE.Name = "Basic Scanner"
+MODE.Name = "Object Scanner"
 MODE.MenuColor = Star_Trek.LCARS.ColorBlue
 
 function MODE:Activate(ply, ent)
@@ -27,17 +27,6 @@ end
 
 function MODE:Deactivate(ent)
 	return
-end
-
-function MODE:ScanEntity(ent)
-	if not IsValid(ent) then
-		return
-	end
-
-	local success, scanData = Star_Trek.Sensors:ScanEntity(ent)
-	if success then
-		PrintTable(scanData)
-	end
 end
 
 function MODE:PrimaryAttack(ent)
@@ -78,9 +67,14 @@ function MODE:Think(ent)
 		return
 	end
 
-	local target = owner:GetEyeTrace().Entity
-	if not IsValid(target) then
+	local trace = owner:GetEyeTrace()
+
+	local target = trace.Entity
+	local distance = trace.HitPos:Distance(trace.StartPos)
+	if not IsValid(target) or distance > Star_Trek.Tricorder.ScanRange then
 		if lastScan then
+			Star_Trek.Logs:AddEntry(ent, owner, "Object Lost!", Star_Trek.LCARS.ColorRed)
+			Star_Trek.Logs:AddEntry(ent, owner, "Scan Disrupted!", Star_Trek.LCARS.ColorRed)
 			self:DisableScanning(window)
 		end
 
@@ -94,18 +88,39 @@ function MODE:Think(ent)
 				if diff > SCAN_TIME then
 					if self.Scanned then return end
 
-					print(target)
+					Star_Trek.Logs:AddEntry(ent, owner, "Scan Complete!")
+					Star_Trek.Logs:AddEntry(ent, owner, "")
+					Star_Trek.Logs:AddEntry(ent, owner, "Scan Data:", Star_Trek.LCARS.ColorOrange)
+
+					local success, scanData = Star_Trek.Sensors:ScanEntity(target)
+					if not success then
+						Star_Trek.Logs:AddEntry(ent, owner, "Scan Corrupted!", Star_Trek.LCARS.ColorRed, TEXT_ALIGN_RIGHT)
+						Star_Trek.Logs:AddEntry(ent, owner, scanData, Star_Trek.LCARS.ColorRed, TEXT_ALIGN_RIGHT)
+					end
+
+					Star_Trek.Logs:AddEntry(ent, owner, scanData.Name, nil, TEXT_ALIGN_RIGHT)
+
+					Star_Trek.Logs:AddEntry(ent, owner, "Life Signs:")
+					Star_Trek.Logs:AddEntry(ent, owner, scanData.Alive and "Found" or "Not Found", nil, TEXT_ALIGN_RIGHT)
 
 					self.Scanned = true
 				end
 			else
+				Star_Trek.Logs:AddEntry(ent, owner, "Object Changed!", Star_Trek.LCARS.ColorRed)
+				Star_Trek.Logs:AddEntry(ent, owner, "Scan Disrupted!", Star_Trek.LCARS.ColorRed)
 				self:DisableScanning(window)
 			end
 		else
+			Star_Trek.Logs:AddEntry(ent, owner, "")
+			Star_Trek.Logs:AddEntry(ent, owner, "Scanning Object...")
 			self:EnableScanning(window, target)
 		end
 	else
 		if lastScan then
+			if not self.Scanned then
+				Star_Trek.Logs:AddEntry(ent, owner, "Scan Aborted!", Star_Trek.LCARS.ColorRed)
+			end
+
 			self:DisableScanning(window)
 		end
 	end
