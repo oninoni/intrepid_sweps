@@ -34,3 +34,6 @@ end
 
 function MODE:SecondaryAttack(ent)
 end
+
+function MODE:Think(ent)
+end

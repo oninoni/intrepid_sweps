@@ -23,7 +23,7 @@ SELF.LogType = false
 
 function SELF:Open(ent)
 	local success, window = Star_Trek.LCARS:CreateWindow(
-		"log_entry",
+		"tricorder",
 		Vector(),
 		Angle(),
 		ent.MenuScale,
@@ -32,7 +32,6 @@ function SELF:Open(ent)
 		function(windowData, interfaceData, buttonId)
 
 		end,
-		true,
 		Color(255, 255, 255)
 	)
 

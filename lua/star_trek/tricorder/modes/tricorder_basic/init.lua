@@ -41,15 +41,72 @@ function MODE:ScanEntity(ent)
 end
 
 function MODE:PrimaryAttack(ent)
+end
+
+function MODE:SecondaryAttack(ent)
+end
+
+function MODE:EnableScanning(window, target)
+	self.TargetLock = target
+	self.Scanned = nil
+
+	window:EnableScanning()
+	window:Update()
+end
+
+function MODE:DisableScanning(window)
+	self.Scanned = nil
+	self.TargetLock = nil
+
+	window:DisableScanning()
+	window:Update()
+end
+
+local SCAN_TIME = Star_Trek.Tricorder.ScanTime
+
+function MODE:Think(ent)
+	local interface = ent.Interface
+	if not istable(interface) then
+		return
+	end
+
+	local window = interface.Windows[1]
+	local lastScan = window.LastScan
+
 	local owner = ent:GetOwner()
 	if not IsValid(owner) then
 		return
 	end
 
-	local trace = owner:GetEyeTrace()
-	self:ScanEntity(trace.Entity)
-end
+	local target = owner:GetEyeTrace().Entity
+	if not IsValid(target) then
+		if lastScan then
+			self:DisableScanning(window)
+		end
 
-function MODE:SecondaryAttack(ent)
-	self:ScanEntity(ent)
+		return
+	end
+
+	if owner:KeyDown(IN_ATTACK) then
+		if lastScan then
+			if IsValid(self.TargetLock) and self.TargetLock == target then
+				local diff = CurTime() - lastScan
+				if diff > SCAN_TIME then
+					if self.Scanned then return end
+
+					print(target)
+
+					self.Scanned = true
+				end
+			else
+				self:DisableScanning(window)
+			end
+		else
+			self:EnableScanning(window, target)
+		end
+	else
+		if lastScan then
+			self:DisableScanning(window)
+		end
+	end
 end

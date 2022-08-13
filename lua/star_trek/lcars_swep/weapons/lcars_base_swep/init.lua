@@ -99,6 +99,12 @@ function SWEP:SecondaryAttack()
 	self.ActiveMode:SecondaryAttack(self)
 end
 
+function SWEP:Think()
+	if self.ActiveMode and isfunction(self.ActiveMode.Think) then
+		self.ActiveMode:Think(self)
+	end
+end
+
 function SWEP:ActivateMode(modeName)
 	self:DeactivateMode(function()
 		local mode = {}

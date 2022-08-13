@@ -13,20 +13,8 @@
 ---------------------------------------
 
 ---------------------------------------
---         Tricorder | Index         --
+--         Tricorder | Config        --
 ---------------------------------------
 
-Star_Trek:RequireModules("lcars_swep")
-
-Star_Trek.Tricorder = Star_Trek.Tricorder or {}
-
-if SERVER then
-	AddCSLuaFile("sh_config.lua")
-
-	include("sh_config.lua")
-	include("sv_tricorder.lua")
-end
-
-if CLIENT then
-	include("sh_config.lua")
-end
+-- Basic scan time of the tricorder
+Star_Trek.Tricorder.ScanTime = 5

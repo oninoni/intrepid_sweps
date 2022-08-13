@@ -1,6 +1,6 @@
 ---------------------------------------
 ---------------------------------------
---        Star Trek Utilities        --
+--         Star Trek Modules         --
 --                                   --
 --            Created by             --
 --       Jan 'Oninoni' Ziegler       --
@@ -8,25 +8,16 @@
 -- This software can be used freely, --
 --    but only distributed by me.    --
 --                                   --
---    Copyright © 2021 Jan Ziegler   --
+--    Copyright © 2022 Jan Ziegler   --
 ---------------------------------------
 ---------------------------------------
 
 ---------------------------------------
---         Tricorder | Index         --
+--      LCARS Tricorder | Shared     --
 ---------------------------------------
 
-Star_Trek:RequireModules("lcars_swep")
+if not istable(WINDOW) then Star_Trek:LoadAllModules() return end
+local SELF = WINDOW
 
-Star_Trek.Tricorder = Star_Trek.Tricorder or {}
-
-if SERVER then
-	AddCSLuaFile("sh_config.lua")
-
-	include("sh_config.lua")
-	include("sv_tricorder.lua")
-end
-
-if CLIENT then
-	include("sh_config.lua")
-end
+-- Determines the parent windows name for this one. (Like Deriving Classes)
+SELF.BaseWindow = "text_entry"

@@ -26,17 +26,17 @@ function MODE:Activate(ply, ent)
 end
 
 function MODE:Deactivate(ent)
-	local padInterface = ent.Interface
-	if istable(padInterface) then
-		self.LogData = padInterface:GetSessionData()
+	local interface = ent.Interface
+	if istable(interface) then
+		self.LogData = interface:GetSessionData()
 	end
 end
 
 function MODE:PrimaryAttack(ent)
-	local padInterface = ent.Interface
-	if not istable(padInterface) then return end
+	local interface = ent.Interface
+	if not istable(interface) then return end
 
-	local logWindow = padInterface.Windows[1]
+	local logWindow = interface.Windows[1]
 	if not istable(logWindow) then return end
 
 	local ply = ent:GetOwner()
@@ -79,7 +79,7 @@ function MODE:PrimaryAttack(ent)
 		return
 	end
 
-	if padInterface.Locked then return end
+	if interface.Locked then return end
 
 	local sessionData
 	if targetInterface.Class == "eng_logs" then
@@ -98,13 +98,13 @@ function MODE:PrimaryAttack(ent)
 end
 
 function MODE:SecondaryAttack(ent)
-	local padInterface = ent.Interface
-	if not istable(padInterface) then return end
+	local interface = ent.Interface
+	if not istable(interface) then return end
 
-	local logWindow = padInterface.Windows[1]
+	local logWindow = interface.Windows[1]
 	if not istable(logWindow) then return end
 
-	local locked = not padInterface.Locked
+	local locked = not interface.Locked
 
 	if locked then
 		logWindow.Title = "Logs (LOCKED)"
@@ -112,6 +112,9 @@ function MODE:SecondaryAttack(ent)
 		logWindow.Title = "Logs"
 	end
 
-	padInterface.Locked = locked
+	interface.Locked = locked
 	logWindow:Update()
+end
+
+function MODE:Think(ent)
 end
