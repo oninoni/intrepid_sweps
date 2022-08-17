@@ -91,17 +91,17 @@ function MODE:Think(ent)
 					Star_Trek.Logs:AddEntry(ent, owner, "Scan Complete!")
 					Star_Trek.Logs:AddEntry(ent, owner, "")
 					Star_Trek.Logs:AddEntry(ent, owner, "Scan Data:", Star_Trek.LCARS.ColorOrange)
+					Star_Trek.Logs:AddEntry(ent, owner, "")
 
 					local success, scanData = Star_Trek.Sensors:ScanEntity(target)
 					if not success then
 						Star_Trek.Logs:AddEntry(ent, owner, "Scan Corrupted!", Star_Trek.LCARS.ColorRed, TEXT_ALIGN_RIGHT)
 						Star_Trek.Logs:AddEntry(ent, owner, scanData, Star_Trek.LCARS.ColorRed, TEXT_ALIGN_RIGHT)
+
+						return
 					end
 
-					Star_Trek.Logs:AddEntry(ent, owner, scanData.Name, nil, TEXT_ALIGN_RIGHT)
-
-					Star_Trek.Logs:AddEntry(ent, owner, "Life Signs:")
-					Star_Trek.Logs:AddEntry(ent, owner, scanData.Alive and "Found" or "Not Found", nil, TEXT_ALIGN_RIGHT)
+					Star_Trek.Tricorder:AnalyseScanData(ent, owner, scanData)
 
 					self.Scanned = true
 				end
