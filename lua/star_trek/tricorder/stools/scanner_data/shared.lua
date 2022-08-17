@@ -78,7 +78,10 @@ if SERVER then
 	-- Output the Custom Data from on a tricorder.
 	hook.Add("Star_Trek.Tricorder.AnalyseScanData", "Scanner_Data.Output", function(ent, owner, scanData)
 		if isstring(scanData.ScannerData) then
-			Star_Trek.Logs:AddEntry(ent, owner, scanData.ScannerData)
+			local split = string.Split(scanData.ScannerData, "\n")
+			for _, line in pairs(split) do
+				Star_Trek.Logs:AddEntry(ent, owner, line)
+			end
 		end
 	end)
 end
