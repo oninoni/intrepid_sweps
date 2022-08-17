@@ -45,7 +45,7 @@ SWEP.CustomWorldModelOffset = Vector(4, -3, -2)
 SWEP.CustomWorldModelAngle = Angle(0, 180, -90)
 SWEP.CustomWorldModelScale = 1
 
-SWEP.MenuOffset = Vector(1, 0, 0)
+SWEP.MenuOffset = Vector(1, 0.2, 0)
 SWEP.MenuAngle = Angle(90, 0, 0)
 
 SWEP.MenuScale = 100

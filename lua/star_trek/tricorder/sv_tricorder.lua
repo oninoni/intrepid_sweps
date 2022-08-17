@@ -17,7 +17,7 @@
 ---------------------------------------
 
 function Star_Trek.Tricorder:AnalyseScanData(ent, owner, scanData)
-	Star_Trek.Logs:AddEntry(ent, owner, scanData.Name, nil, TEXT_ALIGN_LEFT)
+	Star_Trek.Logs:AddEntry(ent, owner, scanData.Name, Star_Trek.LCARS.ColorLightBlue, TEXT_ALIGN_LEFT)
 
 	if scanData.Alive then
 		Star_Trek.Logs:AddEntry(ent, owner, "Life-Signs Detected!", Star_Trek.LCARS.ColorOrange, TEXT_ALIGN_RIGHT)
@@ -59,6 +59,10 @@ function Star_Trek.Tricorder:AnalyseScanData(ent, owner, scanData)
 		Star_Trek.Logs:AddEntry(ent, owner, "Mass:", nil, TEXT_ALIGN_LEFT)
 
 		Star_Trek.Logs:AddEntry(ent, owner, math.Round(scanData.Mass, 2) .. "kg", color, TEXT_ALIGN_RIGHT)
+	end
+
+	if scanData.Frozen then
+		Star_Trek.Logs:AddEntry(ent, owner, "Rigidly Attached", nil, TEXT_ALIGN_LEFT)
 	end
 
 	hook.Run("Star_Trek.Tricorder.AnalyseScanData", ent, owner, scanData)

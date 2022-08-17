@@ -15,3 +15,8 @@
 ---------------------------------------
 --     Tricorder Entity | Server     --
 ---------------------------------------
+
+-- Safety Sound Removal
+function SWEP:OnRemove()
+	self:StopLoopingSound(self.LoopId)
+end

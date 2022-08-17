@@ -76,6 +76,8 @@ function MODE:PrimaryAttack(ent)
 		wallPanelLogWindow:SetSessionData(sessionData)
 		wallPanelLogWindow:Update()
 
+		ent:EmitSound("star_trek.lcars_beep")
+
 		return
 	end
 
@@ -95,6 +97,8 @@ function MODE:PrimaryAttack(ent)
 
 	logWindow:SetSessionData(sessionData)
 	logWindow:Update()
+
+	ent:EmitSound("star_trek.lcars_beep")
 end
 
 function MODE:SecondaryAttack(ent)
@@ -114,6 +118,8 @@ function MODE:SecondaryAttack(ent)
 
 	interface.Locked = locked
 	logWindow:Update()
+
+	ent:EmitSound("star_trek.lcars_beep")
 end
 
 function MODE:Think(ent)

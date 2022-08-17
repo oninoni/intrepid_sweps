@@ -33,19 +33,70 @@ function MODE:PrimaryAttack(ent)
 end
 
 function MODE:SecondaryAttack(ent)
+	local interface = ent.Interface
+	if not istable(interface) then return end
+
+	local logWindow = interface.Windows[1]
+	if not istable(logWindow) then return end
+
+	local ply = ent:GetOwner()
+	if not IsValid(ply) then return end
+
+	local eyeTrace = ply:GetEyeTrace()
+	local targetEnt = eyeTrace.Entity
+	if not IsValid(targetEnt) then
+		local closestDistance = math.huge
+		local closest
+
+		local hitPos = eyeTrace.HitPos
+		for _, foundEnt in pairs(ents.FindInSphere(hitPos, 50)) do
+			local distance = foundEnt:GetPos():Distance(hitPos)
+			if distance < closestDistance then
+				closestDistance = distance
+				closest = foundEnt
+			end
+		end
+
+		if not IsValid(closest) then
+			return
+		end
+
+		targetEnt = closest
+	end
+
+	local targetInterface = targetEnt.Interface
+	if not istable(targetInterface) then return end
+
+	if targetInterface.Class == "wallpanel" then
+		local sessionData = logWindow.SessionData
+
+		local wallPanelLogWindow = targetInterface.Windows[2]
+		if not istable(wallPanelLogWindow) then return end
+
+		wallPanelLogWindow:SetSessionData(sessionData)
+		wallPanelLogWindow:Update()
+
+		ent:EmitSound("star_trek.lcars_beep")
+
+		return
+	end
 end
 
-function MODE:EnableScanning(window, target)
+function MODE:EnableScanning(ent, window, target)
 	self.TargetLock = target
 	self.Scanned = nil
+
+	ent.LoopId = ent:StartLoopingSound("star_trek.tricorder_loop")
 
 	window:EnableScanning()
 	window:Update()
 end
 
-function MODE:DisableScanning(window)
+function MODE:DisableScanning(ent, window)
 	self.Scanned = nil
 	self.TargetLock = nil
+
+	ent:StopLoopingSound(ent.LoopId)
 
 	window:DisableScanning()
 	window:Update()
@@ -75,7 +126,7 @@ function MODE:Think(ent)
 		if lastScan then
 			Star_Trek.Logs:AddEntry(ent, owner, "Object Lost!", Star_Trek.LCARS.ColorRed)
 			Star_Trek.Logs:AddEntry(ent, owner, "Scan Disrupted!", Star_Trek.LCARS.ColorRed)
-			self:DisableScanning(window)
+			self:DisableScanning(ent, window)
 		end
 
 		return
@@ -108,12 +159,12 @@ function MODE:Think(ent)
 			else
 				Star_Trek.Logs:AddEntry(ent, owner, "Object Changed!", Star_Trek.LCARS.ColorRed)
 				Star_Trek.Logs:AddEntry(ent, owner, "Scan Disrupted!", Star_Trek.LCARS.ColorRed)
-				self:DisableScanning(window)
+				self:DisableScanning(ent, window)
 			end
 		else
 			Star_Trek.Logs:AddEntry(ent, owner, "")
 			Star_Trek.Logs:AddEntry(ent, owner, "Scanning Object...")
-			self:EnableScanning(window, target)
+			self:EnableScanning(ent, window, target)
 		end
 	else
 		if lastScan then
@@ -121,7 +172,7 @@ function MODE:Think(ent)
 				Star_Trek.Logs:AddEntry(ent, owner, "Scan Aborted!", Star_Trek.LCARS.ColorRed)
 			end
 
-			self:DisableScanning(window)
+			self:DisableScanning(ent, window)
 		end
 	end
 end

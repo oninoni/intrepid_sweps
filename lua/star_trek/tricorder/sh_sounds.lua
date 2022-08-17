@@ -13,23 +13,14 @@
 ---------------------------------------
 
 ---------------------------------------
---         Tricorder | Index         --
+--         Tricorder | Sounds        --
 ---------------------------------------
 
-Star_Trek:RequireModules("lcars_swep")
-
-Star_Trek.Tricorder = Star_Trek.Tricorder or {}
-
-if SERVER then
-	AddCSLuaFile("sh_config.lua")
-	AddCSLuaFile("sh_sounds.lua")
-
-	include("sh_config.lua")
-	include("sh_sounds.lua")
-	include("sv_tricorder.lua")
-end
-
-if CLIENT then
-	include("sh_config.lua")
-	include("sh_sounds.lua")
-end
+sound.Add({
+	name = "star_trek.tricorder_loop",
+	channel = CHAN_AUTO,
+	volume = .8,
+	level = 70,
+	pitch = 100,
+	sound = "oninoni/startrek/tricorder/tricorder.wav",
+})
