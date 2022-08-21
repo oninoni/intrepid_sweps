@@ -13,21 +13,23 @@
 ---------------------------------------
 
 ---------------------------------------
---            PADD | Index           --
+--            PADD | Fonts           --
 ---------------------------------------
 
-Star_Trek:RequireModules("lcars_swep")
-
-Star_Trek.PADD = Star_Trek.PADD or {}
-
-if SERVER then
-	AddCSLuaFile("cl_fonts.lua")
-	AddCSLuaFile("cl_padd.lua")
-
-	include("sv_padd.lua")
-end
-
-if CLIENT then
-	include("cl_fonts.lua")
-	include("cl_padd.lua")
-end
+surface.CreateFont( "LCARSPADDText", {
+	font = "Swiss911 UCm BT",
+	extended = false,
+	size = 32,
+	weight = 0,
+	blursize = 0,
+	scanlines = 0,
+	antialias = true,
+	underline = false,
+	italic = false,
+	strikeout = false,
+	symbol = false,
+	rotary = false,
+	shadow = false,
+	additive = false,
+	outline = false,
+} )

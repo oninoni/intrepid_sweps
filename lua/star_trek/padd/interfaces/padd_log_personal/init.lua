@@ -13,21 +13,37 @@
 ---------------------------------------
 
 ---------------------------------------
---            PADD | Index           --
+--      LCARS PADD Logs | Server     --
 ---------------------------------------
 
-Star_Trek:RequireModules("lcars_swep")
+local SELF = INTERFACE
+SELF.BaseInterface = "padd_log"
 
-Star_Trek.PADD = Star_Trek.PADD or {}
+SELF.LogType = "Personal Log"
+SELF.LogMobile = true
 
-if SERVER then
-	AddCSLuaFile("cl_fonts.lua")
-	AddCSLuaFile("cl_padd.lua")
+function SELF:Open(ent, sessionData)
+	local success, window = Star_Trek.LCARS:CreateWindow(
+		"log_entry_editable",
+		Vector(),
+		Angle(),
+		ent.MenuScale,
+		ent.MenuWidth,
+		ent.MenuHeight,
+		function(windowData, interfaceData, buttonId)
 
-	include("sv_padd.lua")
-end
+		end,
+		nil,
+		Color(255, 255, 255)
+	)
 
-if CLIENT then
-	include("cl_fonts.lua")
-	include("cl_padd.lua")
+	if istable(sessionData) then
+		window:SetSessionData(sessionData)
+	end
+
+	if not success then
+		return false, window
+	end
+
+	return true, {window}
 end

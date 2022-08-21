@@ -1,6 +1,6 @@
 ---------------------------------------
 ---------------------------------------
---        Star Trek Utilities        --
+--         Star Trek Modules         --
 --                                   --
 --            Created by             --
 --       Jan 'Oninoni' Ziegler       --
@@ -8,26 +8,16 @@
 -- This software can be used freely, --
 --    but only distributed by me.    --
 --                                   --
---    Copyright © 2021 Jan Ziegler   --
+--    Copyright © 2022 Jan Ziegler   --
 ---------------------------------------
 ---------------------------------------
 
 ---------------------------------------
---            PADD | Index           --
+--   LCARS Log Entry Edit | Shared   --
 ---------------------------------------
 
-Star_Trek:RequireModules("lcars_swep")
+if not istable(WINDOW) then Star_Trek:LoadAllModules() return end
+local SELF = WINDOW
 
-Star_Trek.PADD = Star_Trek.PADD or {}
-
-if SERVER then
-	AddCSLuaFile("cl_fonts.lua")
-	AddCSLuaFile("cl_padd.lua")
-
-	include("sv_padd.lua")
-end
-
-if CLIENT then
-	include("cl_fonts.lua")
-	include("cl_padd.lua")
-end
+-- Determines the parent windows name for this one. (Like Deriving Classes)
+SELF.BaseWindow = "log_entry"

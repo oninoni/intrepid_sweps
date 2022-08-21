@@ -58,5 +58,6 @@ SWEP.MenuMouseOffset = Vector(365, 60, 0)
 SWEP.MenuSolid = false
 
 SWEP.Modes = {
-	"padd_log"
+	"padd_log",
+	"padd_personal_log"
 }
