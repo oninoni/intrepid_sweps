@@ -34,13 +34,22 @@ end
 
 function MODE:PrimaryAttack(ent)
 	local interface = ent.Interface
-	if not istable(interface) then return end
+	if not istable(interface) then
+		ent:EmitSound("star_trek.lcars_error")
+		return
+	end
 
 	local logWindow = interface.Windows[1]
-	if not istable(logWindow) then return end
+	if not istable(logWindow) then
+		ent:EmitSound("star_trek.lcars_error")
+		return
+	end
 
 	local ply = ent:GetOwner()
-	if not IsValid(ply) then return end
+	if not IsValid(ply) then
+		ent:EmitSound("star_trek.lcars_error")
+		return
+	end
 
 	local eyeTrace = ply:GetEyeTrace()
 	local targetEnt = eyeTrace.Entity
@@ -58,6 +67,7 @@ function MODE:PrimaryAttack(ent)
 		end
 
 		if not IsValid(closest) then
+			ent:EmitSound("star_trek.lcars_error")
 			return
 		end
 
@@ -65,28 +75,39 @@ function MODE:PrimaryAttack(ent)
 	end
 
 	local targetInterface = targetEnt.Interface
-	if not istable(targetInterface) then return end
+	if not istable(targetInterface) then
+		ent:EmitSound("star_trek.lcars_error")	
+		return
+	end
 
 	if targetInterface.Class == "wallpanel" then
 		local sessionData = logWindow.SessionData
 
 		local wallPanelLogWindow = targetInterface.Windows[2]
-		if not istable(wallPanelLogWindow) then return end
+		if not istable(wallPanelLogWindow) then
+			ent:EmitSound("star_trek.lcars_error")	
+			return
+		end
 
 		wallPanelLogWindow:SetSessionData(sessionData)
 		wallPanelLogWindow:Update()
 
 		ent:EmitSound("star_trek.lcars_beep")
-
 		return
 	end
 
-	if interface.Locked then return end
+	if interface.Locked then
+		ent:EmitSound("star_trek.lcars_error")	
+		return
+	end
 
 	local sessionData
 	if targetInterface.Class == "eng_logs" then
 		local engLogsLogWindow = targetInterface.Windows[4]
-		if not istable(engLogsLogWindow) then return end
+		if not istable(engLogsLogWindow) then
+			ent:EmitSound("star_trek.lcars_error")
+			return
+		end
 
 		sessionData = engLogsLogWindow.SessionData
 	else
@@ -103,10 +124,16 @@ end
 
 function MODE:SecondaryAttack(ent)
 	local interface = ent.Interface
-	if not istable(interface) then return end
+	if not istable(interface) then
+		ent:EmitSound("star_trek.lcars_error")
+		return
+	end
 
 	local logWindow = interface.Windows[1]
-	if not istable(logWindow) then return end
+	if not istable(logWindow) then
+		ent:EmitSound("star_trek.lcars_error")
+		return
+	end
 
 	local locked = not interface.Locked
 
