@@ -28,10 +28,10 @@ function Star_Trek.PADD:EnableEditing(window)
 	local inputLines = table.Copy(window.Lines)
 
 	local headerLines = {}
-	local previousText = {}
+	local previousTextTable = {}
 	for i, line in pairs(inputLines) do
 		if i > 8 then
-			table.insert(previousText, line.Text)
+			table.insert(previousTextTable, line.Text)
 		else
 			table.insert(headerLines, line)
 		end
@@ -43,10 +43,12 @@ function Star_Trek.PADD:EnableEditing(window)
 	function self.Panel:Paint(ww, hh)
 	end
 
-	self.Panel:SetValue(table.concat(previousText, "\n"))
+	local previousText = table.concat(previousTextTable, "\n")
+	self.Panel:SetValue(previousText)
 
-	self.Panel:SetCaretPos(self.LastCaretPos or 0)
-	window.CaretPos = self.LastCaretPos or 0
+	local caretPos = math.min(#previousText, self.LastCaretPos or 0)
+	self.Panel:SetCaretPos(caretPos)
+	window.CaretPos = caretPos
 
 	self.Panel:SetMultiline(true)
 	self.Panel:SetUpdateOnType(true)
