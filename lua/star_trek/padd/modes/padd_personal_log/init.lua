@@ -43,6 +43,7 @@ When clicking is on ignore Secondary!
 function MODE:Activate(ply, ent)
 	Star_Trek.LCARS:OpenInterface(ply, ent, "padd_log_personal", self.LogData)
 	Star_Trek.Logs:AddEntry(ent, ply, "")
+	Star_Trek.Logs:AddEntry(ent, ply, "")
 end
 
 function MODE:Deactivate(ent)

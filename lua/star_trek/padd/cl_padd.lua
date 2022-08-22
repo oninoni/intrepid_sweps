@@ -44,7 +44,9 @@ function Star_Trek.PADD:EnableEditing(window)
 	end
 
 	self.Panel:SetValue(table.concat(previousText, "\n"))
-	self.Panel.LastCaretPos = self.Panel:GetCaretPos()
+
+	self.Panel:SetCaretPos(self.LastCaretPos or 0)
+	window.CaretPos = self.LastCaretPos or 0
 
 	self.Panel:SetMultiline(true)
 	self.Panel:SetUpdateOnType(true)
@@ -57,19 +59,19 @@ function Star_Trek.PADD:EnableEditing(window)
 			})
 		end
 
-		self.LastCaretPos = self:GetCaretPos()
+		Star_Trek.PADD.LastCaretPos = self:GetCaretPos()
 		window:ProcessText(lines)
-		window.CaretPos = self.LastCaretPos
+		window.CaretPos = Star_Trek.PADD.LastCaretPos
 	end
 
 	function self.Panel:Think()
 		local caretPos = self:GetCaretPos()
-		if self.LastCaretPos ~= caretPos then
-			self.LastCaretPos = caretPos
+		if Star_Trek.PADD.LastCaretPos ~= caretPos then
+			Star_Trek.PADD.LastCaretPos = caretPos
 
 			local lines = table.Copy(window.Lines)
 			window:ProcessText(lines)
-			window.CaretPos = self.LastCaretPos
+			window.CaretPos = Star_Trek.PADD.LastCaretPos
 		end
 	end
 

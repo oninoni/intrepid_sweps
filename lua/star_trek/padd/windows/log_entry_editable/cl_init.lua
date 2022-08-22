@@ -20,16 +20,9 @@ if not istable(WINDOW) then Star_Trek:LoadAllModules() return end
 local SELF = WINDOW
 
 function SELF:OnCreate(windowData)
-	self.TextFont = "LCARSPADDText"
-	self.TextHeight = 28
-
 	local success = SELF.Base.OnCreate(self, windowData)
 	if not success then
 		return false
-	end
-
-	if IsValid(self.Panel) then
-		self.Panel:Remove()
 	end
 
 	self.Editing = nil
@@ -55,12 +48,50 @@ function SELF:OnCreate(windowData)
 	return true
 end
 
+function SELF:ProcessText(lines)
+	SELF.Base.ProcessText(self, lines)
+
+	local totalCharacters = 0
+	for i, line in pairs(self.Lines) do
+		if i <= 8 then continue end
+
+		local charCount = #line.Text
+
+		line.First = totalCharacters
+		totalCharacters = totalCharacters + charCount + 1
+	end
+end
+
 function SELF:OnPress(pos, animPos)
 	return SELF.Base.OnPress(self, pos, animPos)
 end
 
 function SELF:OnDraw(pos, animPos)
 	SELF.Base.OnDraw(self, pos, animPos)
+
+	if not self.Editing then return end
+
+	local caretPos = self.CaretPos
+	print(caretPos)
+	if isnumber(caretPos) then
+		for i, line in pairs(self.Lines) do
+			local y = self.Offset + i * self.TextHeight
+
+			if i <= 8 then continue end
+
+			local caretCharPos = caretPos - line.First
+
+			if caretCharPos >= 0 and caretCharPos <= #line.Text then
+				surface.SetFont(self.TextFont)
+
+				local subString = string.sub(line.Text, 1, caretCharPos)
+				print(subString)
+				local x = surface.GetTextSize(subString)
+
+				draw.RoundedBox(0, self.Area1X + x + 4, y - self.TextHeight - 4, 2, self.TextHeight, color_white)
+			end
+		end
+	end
 end
 
 

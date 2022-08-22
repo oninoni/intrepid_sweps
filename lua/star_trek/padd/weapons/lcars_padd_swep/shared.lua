@@ -16,6 +16,8 @@
 --        PADD Entity | Shared       --
 ---------------------------------------
 
+if not istable(SWEP) then Star_Trek:LoadAllModules() return end
+
 SWEP.Base = "lcars_base_swep"
 
 SWEP.PrintName = "PADD - Personal Access Display Device"
@@ -35,10 +37,22 @@ SWEP.WorldModel = "models/oninoni/star_trek/props/padd.mdl"
 
 SWEP.HoldType = "slam"
 
+SWEP.BoneManip = {
+	["ValveBiped.Bip01_R_Clavicle"] = {
+		Ang = Angle(-30, 0, 0),
+	},
+	["ValveBiped.Bip01_Spine"] = {
+		Pos = Vector(-3, 0, 0),
+	},
+	["ValveBiped.cube3"] = {
+		Pos = Vector(-100, 0, 0),
+	},
+}
+
 SWEP.CustomViewModel = "models/oninoni/star_trek/props/padd.mdl"
 SWEP.CustomViewModelBone = "ValveBiped.Bip01_R_Hand"
-SWEP.CustomViewModelOffset = Vector(4, -10.5, -1)
-SWEP.CustomViewModelAngle = Angle(-55, -85, 90)
+SWEP.CustomViewModelOffset = Vector(2, -10.5, 0)
+SWEP.CustomViewModelAngle = Angle(-54, -103, 90)
 SWEP.CustomViewModelScale = 2
 
 SWEP.CustomDrawWorldModel = true
@@ -50,11 +64,11 @@ SWEP.CustomWorldModelScale = 1
 SWEP.MenuOffset = Vector(0, -0.9, 0.15)
 SWEP.MenuAngle = Angle(0, 180, 0)
 
-SWEP.MenuScale = 110
-SWEP.MenuWidth = 550
-SWEP.MenuHeight = 690
+SWEP.MenuScale = 90
+SWEP.MenuWidth = 450
+SWEP.MenuHeight = 565
 SWEP.MenuName = "PADD"
-SWEP.MenuMouseOffset = Vector(365, 60, 0)
+SWEP.MenuMouseOffset = Vector(370, 60, 0)
 SWEP.MenuSolid = false
 
 SWEP.Modes = {
