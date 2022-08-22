@@ -40,7 +40,7 @@ function Star_Trek.Tricorder:AnalyseScanData(ent, owner, scanData)
 		elseif scanData.Health < 0.25 then
 			color = Star_Trek.LCARS.ColorRed
 		end
-		Star_Trek.Logs:AddEntry(ent, owner, math.Round(scanData.Health * 100, 0) .. "%", color, TEXT_ALIGN_RIGHT)
+		Star_Trek.Logs:AddEntry(ent, owner, math.Round(scanData.Health, 0) .. "%", color, TEXT_ALIGN_RIGHT)
 	end
 
 	if isnumber(scanData.Armor) then
@@ -52,7 +52,7 @@ function Star_Trek.Tricorder:AnalyseScanData(ent, owner, scanData)
 		elseif scanData.Armor < 0.25 then
 			color = Star_Trek.LCARS.ColorRed
 		end
-		Star_Trek.Logs:AddEntry(ent, owner, math.Round(scanData.Armor * 100, 0) .. "%", color, TEXT_ALIGN_RIGHT)
+		Star_Trek.Logs:AddEntry(ent, owner, math.Round(scanData.Armor, 0) .. "%", color, TEXT_ALIGN_RIGHT)
 	end
 
 	if isnumber(scanData.Mass) then
