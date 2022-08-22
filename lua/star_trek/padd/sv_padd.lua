@@ -42,6 +42,13 @@ net.Receive("Star_Trek.PADD.UpdatePersonal", function(len, ply)
 		Star_Trek.Logs:AddEntryToSessionInternal(sessionData, ply, line)
 	end
 
+	for _, watcherWindow in pairs(sessionData.Watchers or {}) do
+		-- TODO: Check if window still open! If not Remove from list!
+
+		watcherWindow:UpdateContent()
+		watcherWindow:Update()
+	end
+
 	logWindow:DisableEditing()
 	logWindow:SetSessionData(sessionData)
 	logWindow:Update()
