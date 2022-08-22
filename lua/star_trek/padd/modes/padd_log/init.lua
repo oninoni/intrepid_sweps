@@ -76,7 +76,7 @@ function MODE:PrimaryAttack(ent)
 
 	local targetInterface = targetEnt.Interface
 	if not istable(targetInterface) then
-		ent:EmitSound("star_trek.lcars_error")	
+		ent:EmitSound("star_trek.lcars_error")
 		return
 	end
 
@@ -85,7 +85,7 @@ function MODE:PrimaryAttack(ent)
 
 		local wallPanelLogWindow = targetInterface.Windows[2]
 		if not istable(wallPanelLogWindow) then
-			ent:EmitSound("star_trek.lcars_error")	
+			ent:EmitSound("star_trek.lcars_error")
 			return
 		end
 
@@ -97,7 +97,7 @@ function MODE:PrimaryAttack(ent)
 	end
 
 	if interface.Locked then
-		ent:EmitSound("star_trek.lcars_error")	
+		ent:EmitSound("star_trek.lcars_error")
 		return
 	end
 
