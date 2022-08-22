@@ -72,7 +72,6 @@ function SELF:OnDraw(pos, animPos)
 	if not self.Editing then return end
 
 	local caretPos = self.CaretPos
-	print(caretPos)
 	if isnumber(caretPos) then
 		for i, line in pairs(self.Lines) do
 			local y = self.Offset + i * self.TextHeight
@@ -85,7 +84,6 @@ function SELF:OnDraw(pos, animPos)
 				surface.SetFont(self.TextFont)
 
 				local subString = string.sub(line.Text, 1, caretCharPos)
-				print(subString)
 				local x = surface.GetTextSize(subString)
 
 				draw.RoundedBox(0, self.Area1X + x + 4, y - self.TextHeight - 4, 2, self.TextHeight, color_white)
