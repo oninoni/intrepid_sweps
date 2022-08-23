@@ -91,13 +91,7 @@ function MODE:PrimaryAttack(ent)
 			return
 		end
 
-		if istable(sessionData) then
-			wallPanelLogWindow:SetSessionData(sessionData)
-			wallPanelLogWindow:Update()
-
-			ent:EmitSound("star_trek.lcars_beep")
-			return
-		else
+		if not istable(sessionData) or ply:KeyDown(IN_SPEED) then
 			if interface.Locked then
 				ent:EmitSound("star_trek.lcars_error")
 				return
@@ -111,6 +105,12 @@ function MODE:PrimaryAttack(ent)
 
 			logWindow:SetSessionData(wallPanelSessionData)
 			logWindow:Update()
+
+			ent:EmitSound("star_trek.lcars_beep")
+			return
+		else
+			wallPanelLogWindow:SetSessionData(sessionData)
+			wallPanelLogWindow:Update()
 
 			ent:EmitSound("star_trek.lcars_beep")
 			return
