@@ -15,3 +15,5 @@
 ---------------------------------------
 --        PADD Entity | Server       --
 ---------------------------------------
+
+if not istable(SWEP) then Star_Trek:LoadAllModules() return end

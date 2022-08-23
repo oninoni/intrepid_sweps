@@ -16,6 +16,8 @@
 --    Server | Scanner Data STool    --
 ---------------------------------------
 
+if not istable(TOOL) then Star_Trek:LoadAllModules() return end
+
 TOOL.Category = "ST:RP"
 TOOL.Name = "Scanner Data-Tool"
 TOOL.ConfigName = ""

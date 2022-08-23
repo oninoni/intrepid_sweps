@@ -16,6 +16,8 @@
 --         Logs Mode | Server        --
 ---------------------------------------
 
+if not istable(MODE) then Star_Trek:LoadAllModules() return end
+
 MODE.BaseMode = "base"
 
 MODE.Name = "Create Personal Log"

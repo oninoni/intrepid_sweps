@@ -16,6 +16,8 @@
 --     Tricorder Entity | Server     --
 ---------------------------------------
 
+if not istable(SWEP) then Star_Trek:LoadAllModules() return end
+
 -- Safety Sound Removal
 function SWEP:OnRemove()
 	self:StopLoopingSound(self.LoopId)

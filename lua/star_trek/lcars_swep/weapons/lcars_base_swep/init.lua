@@ -16,6 +16,8 @@
 --      LCARS Base SWEP | Server     --
 ---------------------------------------
 
+if not istable(SWEP) then Star_Trek:LoadAllModules() return end
+
 function SWEP:InitializeCustom()
 	self.LastReload = CurTime()
 

@@ -16,6 +16,8 @@
 --      LCARS Base SWEP | Client     --
 ---------------------------------------
 
+if not istable(SWEP) then Star_Trek:LoadAllModules() return end
+
 SWEP.Category = "Star Trek (Utilities)"
 
 SWEP.DrawAmmo = false

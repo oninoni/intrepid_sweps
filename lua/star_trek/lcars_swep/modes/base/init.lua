@@ -16,6 +16,8 @@
 --   LCARS SWEP Mode: Base | Server  --
 ---------------------------------------
 
+if not istable(MODE) then Star_Trek:LoadAllModules() return end
+
 MODE.BaseMode = nil
 
 MODE.Name = "Base"

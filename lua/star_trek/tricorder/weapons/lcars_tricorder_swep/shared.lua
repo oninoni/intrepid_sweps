@@ -16,6 +16,8 @@
 --     Tricorder Entity | Shared     --
 ---------------------------------------
 
+if not istable(SWEP) then Star_Trek:LoadAllModules() return end
+
 SWEP.Base = "lcars_base_swep"
 
 SWEP.PrintName = "TR-590 Tricorder X"

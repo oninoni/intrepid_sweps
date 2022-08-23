@@ -16,6 +16,8 @@
 --     Tricorder - Basic | Server    --
 ---------------------------------------
 
+if not istable(MODE) then Star_Trek:LoadAllModules() return end
+
 MODE.BaseMode = "base"
 
 MODE.Name = "Object Scanner"

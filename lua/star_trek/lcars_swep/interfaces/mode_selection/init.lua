@@ -16,10 +16,14 @@
 --   LCARS Tricorder Modes | Server  --
 ---------------------------------------
 
+if not istable(INTERFACE) then Star_Trek:LoadAllModules() return end
 local SELF = INTERFACE
+
 SELF.BaseInterface = "base"
 
 SELF.LogType = false
+
+SELF.AutoClicker = true
 
 function SELF:Open(ent, modes)
 	local buttons = {}

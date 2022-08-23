@@ -16,6 +16,8 @@
 --      LCARS Base SWEP | Shared     --
 ---------------------------------------
 
+if not istable(SWEP) then Star_Trek:LoadAllModules() return end
+
 SWEP.Base = "oni_base"
 
 SWEP.PrintName = "LCARS Base SWEP"
