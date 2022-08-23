@@ -32,7 +32,8 @@ net.Receive("Star_Trek.PADD.UpdatePersonal", function(len, ply)
 	local logWindow = interface.Windows[1]
 	if not istable(logWindow) then return end
 
-	local sessionData = table.Copy(logWindow.SessionData)
+	local sessionData = logWindow.SessionData
+	if not istable(sessionData) then return end
 
 	sessionData.Entries = {}
 	Star_Trek.Logs:AddEntryToSessionInternal(sessionData, ply, "Session started.")

@@ -91,11 +91,30 @@ function MODE:PrimaryAttack(ent)
 			return
 		end
 
-		wallPanelLogWindow:SetSessionData(sessionData)
-		wallPanelLogWindow:Update()
+		if istable(sessionData) then
+			wallPanelLogWindow:SetSessionData(sessionData)
+			wallPanelLogWindow:Update()
 
-		ent:EmitSound("star_trek.lcars_beep")
-		return
+			ent:EmitSound("star_trek.lcars_beep")
+			return
+		else
+			if interface.Locked then
+				ent:EmitSound("star_trek.lcars_error")
+				return
+			end
+
+			local wallPanelSessionData = wallPanelLogWindow.SessionData
+			if not istable(wallPanelSessionData) then
+				ent:EmitSound("star_trek.lcars_error")
+				return
+			end
+
+			logWindow:SetSessionData(wallPanelSessionData)
+			logWindow:Update()
+
+			ent:EmitSound("star_trek.lcars_beep")
+			return
+		end
 	end
 
 	if interface.Locked then
