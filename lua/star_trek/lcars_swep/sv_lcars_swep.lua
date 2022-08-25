@@ -38,11 +38,14 @@ end
 hook.Add("Star_Trek.LCARS.OpenInterface", "Star_Trek.LCARS_SWEP.UpdateScreenClicker",  function(interfaceData, ply)
 	local ent = interfaceData.Ent
 
-	if ent.IsLCARS and interfaceData.AutoClicker then
-		Star_Trek.LCARS_SWEP:SetScreenClicker(ent:GetOwner(), true)
+	if ent.IsLCARS then
+		if interfaceData.AutoClicker then
+			Star_Trek.LCARS_SWEP:SetScreenClicker(ent:GetOwner(), true)
+		end
 
 		interfaceData.Solid = ent.MenuSolid
 	end
+
 end)
 
 hook.Add("Star_Trek.LCARS.PostCloseInterface", "Star_Trek.LCARS_SWEP.UpdateScreenClicker", function(ent)
