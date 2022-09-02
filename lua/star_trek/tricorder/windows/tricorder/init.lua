@@ -43,7 +43,3 @@ end
 function SELF:DisableScanning()
 	self.LastScan = nil
 end
-
-function SELF:OnPress(interfaceData, ply, buttonId, callback)
-	return SELF.Base.OnPress(self, interfaceData, ply, buttonId, callback)
-end

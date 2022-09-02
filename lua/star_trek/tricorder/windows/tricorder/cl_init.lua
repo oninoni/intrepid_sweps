@@ -34,11 +34,10 @@ function SELF:OnCreate(windowData)
 
 	self.LastScan = windowData.LastScan
 
-	local successScanner, scannerBar = self:GenerateElement("scanner", self.Id .. "_ScannerBar", self.Area1Width, 56, SCAN_STEPS)
+	local successScanner, scannerBar = self:GenerateElement("scanner", self.Id .. "_ScannerBar", self.Area1Width, 56, SCAN_STEPS, windowData.HFlip)
 	if not successScanner then
 		return false
 	end
-
 	self.ScannerBar = scannerBar
 
 	return true
