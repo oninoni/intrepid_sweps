@@ -53,10 +53,9 @@ function SELF:Open(ent, modes)
 		ent.MenuScale,
 		ent.MenuWidth,
 		ent.MenuHeight,
-		function(windowData, interfaceData, ply, buttonId)
+		function(windowData, interfaceData, ply, buttonId, buttonData)
 			interfaceData:Close(function()
 				if buttonId < buttonCount + 1 then
-					local buttonData = windowData.Buttons[buttonId]
 					ent:ActivateMode(buttonData.Data)
 				end
 			end)
