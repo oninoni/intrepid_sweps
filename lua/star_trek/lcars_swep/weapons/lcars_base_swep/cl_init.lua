@@ -29,7 +29,7 @@ function SWEP:GetPosAngle(world)
 	if IsValid(owner) then
 		if world then
 			local m = owner:GetBoneMatrix(owner:LookupBone(self.CustomWorldModelBone))
-			if IsValid(m) then
+			if m ~= nil then
 				pos, ang = LocalToWorld(self.CustomWorldModelOffset, self.CustomWorldModelAngle, m:GetTranslation(), m:GetAngles())
 			end
 
