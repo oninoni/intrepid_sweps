@@ -25,9 +25,17 @@ TOOL.ConfigName = ""
 local textEntry
 
 if CLIENT then
+	TOOL.Information = {
+		{ name = "left" },
+		{ name = "right" },
+		{ name = "reload" }
+	}
+
 	language.Add("tool.scanner_data.name", "Scanner Data-Tool")
 	language.Add("tool.scanner_data.desc", "Allows setting custom text onto an entity for retrieval using a tricorder.")
-	language.Add("tool.scanner_data.0", "Left-Click: Set Data, Right Click: Copy Data, R: Delete Data")
+	language.Add("tool.scanner_data.left", "Set Data")
+	language.Add("tool.scanner_data.right", "Copy Data")
+	language.Add("tool.scanner_data.reload", "Delete Data")
 
 	net.Receive("Scanner_Data.GetData", function(len)
 		local data = net.ReadString()
