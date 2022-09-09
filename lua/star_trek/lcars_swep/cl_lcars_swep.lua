@@ -113,3 +113,13 @@ hook.Add("Star_Trek.LCARS.PreventButton", "Star_Trek.LCARS_SWEP.PreventButton", 
 		return true
 	end
 end)
+
+hook.Add("HUDPaint", "Star_Trek.LCARS_SWEP.HUDPaint", function()
+	local w = ScrW()
+
+	local ply = LocalPlayer()
+	local wep = ply:GetActiveWeapon()
+	if IsValid(wep) and wep.IsLCARS then
+		draw.DrawText(wep.Instructions, "LCARSMed", w / 2, 10, color_white, TEXT_ALIGN_CENTER)
+	end
+end)

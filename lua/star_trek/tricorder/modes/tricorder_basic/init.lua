@@ -139,6 +139,11 @@ function MODE:Think(ent)
 
 	local target = trace.Entity
 	local distance = trace.HitPos:Distance(trace.StartPos)
+	if owner:KeyDown(IN_WALK) then
+		target = owner
+		distance = 0
+	end
+
 	if not IsValid(target) or distance > Star_Trek.Tricorder.ScanRange then
 		if lastScan then
 			Star_Trek.Logs:AddEntry(ent, owner, "Object Lost!", Star_Trek.LCARS.ColorRed)

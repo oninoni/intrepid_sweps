@@ -25,7 +25,7 @@ SWEP.PrintName = "PADD - Personal Access Display Device"
 SWEP.Author = "Oninoni"
 SWEP.Contact = "Discord: Oninoni#8830"
 SWEP.Purpose = "Multifunctional device"
-SWEP.Instructions = "Press R, to activate. Hold R, to disable."
+SWEP.Instructions = "Press R to activate. Hold R to disable."
 
 SWEP.Spawnable = true
 SWEP.AdminOnly = false
