@@ -62,16 +62,19 @@ if CLIENT then
 		if ChangeScanDataCheckBox:GetChecked() then
 			data = textEntry:GetText()
 		end
-		
+
 		local overrideName = ""
 		if OverrideNameCheckBox:GetChecked() then
 			overrideName = OverrideNameText:GetText()
 		end
 
+		local holomatter = OverrideHolomatterComboBox:GetSelectedID()
+
 		net.Start("Scanner_Data.SetData")
 			net.WriteEntity(ent)
 			net.WriteString(data)
 			net.WriteString(overrideName)
+			net.WriteInt(holomatter, 3)
 		net.SendToServer()
 	end)
 end
@@ -84,9 +87,18 @@ if SERVER then
 		local ent = net.ReadEntity()
 		local data = net.ReadString()
 		local overrideName = net.ReadString()
+		local holomatter = net.ReadInt(3)
 
 		if data ~= "" then ent.ScannerData = data end
 		ent.OverrideName = overrideName
+
+		if holomatter == 1 or ent:IsPlayer() then -- Unchange
+			return
+		elseif holomatter == 2 then
+			ent.HoloMatter = true
+		elseif holomatter == 3 then
+			ent.HoloMatter = false
+		end
 	end)
 
 	-- Read Custom Data from entity.
@@ -189,9 +201,20 @@ function TOOL:BuildCPanel()
 		textEntry:SetEnabled(val)
 	end
 
+	OverrideHolomatterLabel = vgui.Create("DLabel")
+	OverrideHolomatterLabel:SetText("Holomatter:")
+	OverrideHolomatterLabel:SetTextColor(Color(0, 0, 0))
+
+	OverrideHolomatterComboBox = vgui.Create("DComboBox")
+	OverrideHolomatterComboBox:AddChoice("Unchange")
+	OverrideHolomatterComboBox:AddChoice("Make Holomatter")
+	OverrideHolomatterComboBox:AddChoice("Make Normal Matter")
+	OverrideHolomatterComboBox:ChooseOptionID(1)
 
 	self:AddItem(OverrideNameCheckBox)
 	self:AddItem(OverrideNameText)
 	self:AddItem(ChangeScanDataCheckBox)
 	self:AddItem(textEntry)
+	self:AddItem(OverrideHolomatterLabel)
+	self:AddItem(OverrideHolomatterComboBox)
 end
