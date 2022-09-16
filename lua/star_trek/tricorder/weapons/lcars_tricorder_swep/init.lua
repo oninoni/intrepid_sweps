@@ -20,5 +20,7 @@ if not istable(SWEP) then Star_Trek:LoadAllModules() return end
 
 -- Safety Sound Removal
 function SWEP:OnRemove()
-	self:StopLoopingSound(self.LoopId)
+	if isnumber(self.LoopId) then
+		self:StopLoopingSound(self.LoopId)
+	end
 end

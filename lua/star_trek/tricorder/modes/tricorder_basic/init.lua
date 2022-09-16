@@ -103,6 +103,9 @@ function MODE:EnableScanning(ent, window, target)
 	self.TargetLock = target
 	self.Scanned = nil
 
+	if isnumber(ent.LoopId) then
+		ent:StopLoopingSound(ent.LoopId)
+	end
 	ent.LoopId = ent:StartLoopingSound("star_trek.tricorder_loop")
 
 	window:EnableScanning()
@@ -113,7 +116,9 @@ function MODE:DisableScanning(ent, window)
 	self.Scanned = nil
 	self.TargetLock = nil
 
-	ent:StopLoopingSound(ent.LoopId)
+	if isnumber(ent.LoopId) then
+		ent:StopLoopingSound(ent.LoopId)
+	end
 
 	window:DisableScanning()
 	window:Update()
