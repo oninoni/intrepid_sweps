@@ -95,10 +95,10 @@ if SERVER then
 			ent.ScannerData = data
 		end
 
-		if holomatter == 1 or ent:IsPlayer() or ent:IsNPC() or ent:IsNextBot() then
+		if holomatter == 1 or ent:IsPlayer() then
 			ent.HoloMatter = nil
 			ent.Replicated = nil
-		elseif holomatter == 2 then
+		elseif holomatter == 2 and not ent:IsNPC() and not ent:IsNextBot() then
 			ent.Replicated = true
 			ent.HoloMatter = nil
 		elseif holomatter == 3 then
