@@ -32,7 +32,7 @@ if CLIENT then
 	}
 
 	language.Add("tool.scanner_data.name", "Scanner Data-Tool")
-	language.Add("tool.scanner_data.desc", "Allows setting custom text onto an entity for retrieval using a tricorder.")
+	language.Add("tool.scanner_data.desc", "Allows setting custom text and custom name onto an entity for retrieval using a tricorder.")
 	language.Add("tool.scanner_data.left", "Set Data")
 	language.Add("tool.scanner_data.right", "Copy Data")
 	language.Add("tool.scanner_data.reload", "Delete Data")
@@ -58,11 +58,23 @@ if CLIENT then
 		local tool = ply:GetTool("scanner_data")
 		if not istable(tool) then return end
 
-		local data = textEntry:GetText()
+		local data = ""
+		if ChangeScanDataCheckBox:GetChecked() then
+			data = textEntry:GetText()
+		end
+
+		local overrideName = ""
+		if OverrideNameCheckBox:GetChecked() then
+			overrideName = OverrideNameText:GetText()
+		end
+
+		local holomatter = OverrideHolomatterComboBox:GetSelectedID()
 
 		net.Start("Scanner_Data.SetData")
 			net.WriteEntity(ent)
 			net.WriteString(data)
+			net.WriteString(overrideName)
+			net.WriteInt(holomatter, 3)
 		net.SendToServer()
 	end)
 end
@@ -74,8 +86,19 @@ if SERVER then
 	net.Receive("Scanner_Data.SetData", function(len, ply)
 		local ent = net.ReadEntity()
 		local data = net.ReadString()
+		local overrideName = net.ReadString()
+		local holomatter = net.ReadInt(3)
 
-		ent.ScannerData = data
+		if data ~= "" then ent.ScannerData = data end
+		ent.OverrideName = overrideName
+
+		if holomatter == 1 or ent:IsPlayer() then -- Unchange
+			return
+		elseif holomatter == 2 then
+			ent.HoloMatter = true
+		elseif holomatter == 3 then
+			ent.HoloMatter = false
+		end
 	end)
 
 	-- Read Custom Data from entity.
@@ -152,9 +175,46 @@ function TOOL:BuildCPanel()
 		Description = "#tool.scanner_data.desc"
 	})
 
+	OverrideNameText = vgui.Create("DTextEntry")
+	OverrideNameText:SetPlaceholderText("Enter new name (leave empty for default name)")
+
+	OverrideNameCheckBox = vgui.Create("DCheckBoxLabel")
+	OverrideNameCheckBox:SetText("Override entity's name")
+	OverrideNameCheckBox:SizeToContents()
+	OverrideNameCheckBox:SetTextColor(Color(0, 0, 0))
+	OverrideNameCheckBox:SetChecked(true)
+	function OverrideNameCheckBox:OnChange(val)
+		OverrideNameText:SetEnabled(val)
+	end
+
 	textEntry = vgui.Create("DTextEntry")
 	textEntry:SetMultiline(true)
+	textEntry:SetPlaceholderText("Enter custom data")
 	textEntry:SetSize(100, 100)
 
+	ChangeScanDataCheckBox = vgui.Create("DCheckBoxLabel")
+	ChangeScanDataCheckBox:SetText("Set custom scan data")
+	ChangeScanDataCheckBox:SizeToContents()
+	ChangeScanDataCheckBox:SetTextColor(Color(0, 0, 0))
+	ChangeScanDataCheckBox:SetChecked(true)
+	function ChangeScanDataCheckBox:OnChange(val)
+		textEntry:SetEnabled(val)
+	end
+
+	OverrideHolomatterLabel = vgui.Create("DLabel")
+	OverrideHolomatterLabel:SetText("Holomatter:")
+	OverrideHolomatterLabel:SetTextColor(Color(0, 0, 0))
+
+	OverrideHolomatterComboBox = vgui.Create("DComboBox")
+	OverrideHolomatterComboBox:AddChoice("Unchange")
+	OverrideHolomatterComboBox:AddChoice("Make Holomatter")
+	OverrideHolomatterComboBox:AddChoice("Make Normal Matter")
+	OverrideHolomatterComboBox:ChooseOptionID(1)
+
+	self:AddItem(OverrideNameCheckBox)
+	self:AddItem(OverrideNameText)
+	self:AddItem(ChangeScanDataCheckBox)
 	self:AddItem(textEntry)
+	self:AddItem(OverrideHolomatterLabel)
+	self:AddItem(OverrideHolomatterComboBox)
 end
