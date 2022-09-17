@@ -65,6 +65,21 @@ if CLIENT then
 		local overrideName = nameTextEntry:GetText()
 		local data = dataTextEntry:GetText()
 		local holomatter = holomatterComboBox:GetSelectedID()
+		
+		if ent:IsPlayer() then
+			if holomatter == 3 then
+				notification.AddLegacy( "A player cannot be a hologram", NOTIFY_ERROR, 3 )
+				surface.PlaySound( "buttons/button10.wav" )
+			elseif holomatter == 2 then
+				notification.AddLegacy( "A player cannot be replicated", NOTIFY_ERROR, 3 )
+				surface.PlaySound( "buttons/button10.wav" )
+			end
+		end
+
+		if (ent:IsNPC() or ent:IsNextBot()) and holomatter == 2 then
+			notification.AddLegacy( "An NPC cannot be replicated", NOTIFY_ERROR, 3 )
+			surface.PlaySound( "buttons/button10.wav" )
+		end
 
 		net.Start("Scanner_Data.SetData")
 			net.WriteEntity(ent)
