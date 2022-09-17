@@ -34,8 +34,8 @@ if CLIENT then
 	language.Add("tool.scanner_data.name", "Scanner Data-Tool")
 	language.Add("tool.scanner_data.desc", "Allows setting custom text and custom name onto an entity for retrieval using a tricorder.")
 	language.Add("tool.scanner_data.left", "Set Data (Hold alt to target self)")
-	language.Add("tool.scanner_data.right", "Copy Data")
-	language.Add("tool.scanner_data.reload", "Delete Data")
+	language.Add("tool.scanner_data.right", "Copy Data (Hold alt to target self)")
+	language.Add("tool.scanner_data.reload", "Delete Data (Hold alt to target self)")
 
 	net.Receive("Scanner_Data.GetData", function(len)
 		local overrideName = net.ReadString()
@@ -166,11 +166,15 @@ end
 function TOOL:RightClick(tr)
 	if (CLIENT) then return true end
 
-	local ent = tr.Entity
-	if not IsValid(ent) then return true end
-
 	local owner = self:GetOwner()
 	if not IsValid(owner) then return true end
+
+	local ent = tr.Entity
+	if owner:KeyDown(IN_WALK) then
+		ent = owner
+	end
+
+	if not IsValid(ent) then return true end
 
 	local matterId = 1
 	if ent.Replicated then
@@ -192,7 +196,14 @@ end
 function TOOL:Reload(tr)
 	if (CLIENT) then return true end
 
+	local owner = self:GetOwner()
+	if not IsValid(owner) then return true end
+
 	local ent = tr.Entity
+	if owner:KeyDown(IN_WALK) then
+		ent = owner
+	end
+
 	if not IsValid(ent) then return true end
 
 	ent.OverrideName = nil
