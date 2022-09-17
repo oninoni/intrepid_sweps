@@ -22,7 +22,7 @@ TOOL.Category = "ST:RP"
 TOOL.Name = "Scanner Data-Tool"
 TOOL.ConfigName = ""
 
-local textEntry
+local nameTextEntry, dataTextEntry, holomatterComboBox
 
 if CLIENT then
 	TOOL.Information = {
@@ -38,7 +38,9 @@ if CLIENT then
 	language.Add("tool.scanner_data.reload", "Delete Data")
 
 	net.Receive("Scanner_Data.GetData", function(len)
+		local overrideName = net.ReadString()
 		local data = net.ReadString()
+		local holomatter = net.ReadUInt(2)
 
 		local ply = LocalPlayer()
 		if not IsValid(ply) then return end
@@ -46,7 +48,11 @@ if CLIENT then
 		local tool = ply:GetTool("scanner_data")
 		if not istable(tool) then return end
 
-		textEntry:SetText(data)
+		print(overrideName, data, holomatter)
+
+		nameTextEntry:SetText(overrideName or "")
+		dataTextEntry:SetText(data or "")
+		holomatterComboBox:ChooseOptionID(holomatter or 1)
 	end)
 
 	net.Receive("Scanner_Data.SetData", function(len)
@@ -58,47 +64,54 @@ if CLIENT then
 		local tool = ply:GetTool("scanner_data")
 		if not istable(tool) then return end
 
-		local data = ""
-		if ChangeScanDataCheckBox:GetChecked() then
-			data = textEntry:GetText()
-		end
-
-		local overrideName = ""
-		if OverrideNameCheckBox:GetChecked() then
-			overrideName = OverrideNameText:GetText()
-		end
-
-		local holomatter = OverrideHolomatterComboBox:GetSelectedID()
+		local overrideName = nameTextEntry:GetText()
+		local data = dataTextEntry:GetText()
+		local holomatter = holomatterComboBox:GetSelectedID()
+		print(holomatter)
 
 		net.Start("Scanner_Data.SetData")
 			net.WriteEntity(ent)
-			net.WriteString(data)
 			net.WriteString(overrideName)
-			net.WriteInt(holomatter, 3)
+			net.WriteString(data)
+			net.WriteUInt(holomatter, 2)
 		net.SendToServer()
 	end)
 end
 
 if SERVER then
 	util.AddNetworkString("Scanner_Data.GetData")
-
 	util.AddNetworkString("Scanner_Data.SetData")
 	net.Receive("Scanner_Data.SetData", function(len, ply)
 		local ent = net.ReadEntity()
-		local data = net.ReadString()
 		local overrideName = net.ReadString()
-		local holomatter = net.ReadInt(3)
+		local data = net.ReadString()
+		local holomatter = net.ReadUInt(2)
 
-		if data ~= "" then ent.ScannerData = data end
-		ent.OverrideName = overrideName
+		print(holomatter)
 
-		if holomatter == 1 or ent:IsPlayer() then -- Unchange
-			return
-		elseif holomatter == 2 then
-			ent.HoloMatter = true
-		elseif holomatter == 3 then
-			ent.HoloMatter = false
+		if overrideName == "" then
+			ent.OverrideName = nil
+		else
+			ent.OverrideName = overrideName
 		end
+		if data == "" then
+			ent.ScannerData = nil
+		else
+			ent.ScannerData = data
+		end
+
+		if holomatter == 1 or ent:IsPlayer() or ent:IsNPC() or ent:IsNextBot() then
+			ent.HoloMatter = nil
+			ent.Replicated = nil
+		elseif holomatter == 2 then
+			ent.Replicated = true
+			ent.HoloMatter = nil
+		elseif holomatter == 3 then
+			ent.Replicated = nil
+			ent.HoloMatter = true
+		end
+
+		print(ent.HoloMatter, ent.Replicated)
 	end)
 
 	-- Read Custom Data from entity.
@@ -146,10 +159,19 @@ function TOOL:RightClick(tr)
 	local owner = self:GetOwner()
 	if not IsValid(owner) then return true end
 
-	local data = ent.ScannerData
+	local matterId = 1
+	if ent.Replicated then
+		matterId = 2
+	elseif ent.HoloMatter then
+		matterId = 3
+	end
+
+	print(ent.OverrideName, ent.ScannerData, matterId)
 
 	net.Start("Scanner_Data.GetData")
-		net.WriteString(data)
+		net.WriteString(ent.OverrideName or "")
+		net.WriteString(ent.ScannerData or "")
+		net.WriteUInt(matterId, 2)
 	net.Send(owner)
 
 	return true
@@ -162,7 +184,10 @@ function TOOL:Reload(tr)
 	local ent = tr.Entity
 	if not IsValid(ent) then return true end
 
+	ent.OverrideName = nil
 	ent.ScannerData = nil
+	ent.Replicated = nil
+	ent.HoloMatter = nil
 
 	return true
 end
@@ -175,46 +200,26 @@ function TOOL:BuildCPanel()
 		Description = "#tool.scanner_data.desc"
 	})
 
-	OverrideNameText = vgui.Create("DTextEntry")
-	OverrideNameText:SetPlaceholderText("Enter new name (leave empty for default name)")
+	nameTextEntry = vgui.Create("DTextEntry")
+	nameTextEntry:SetPlaceholderText("Enter new name (Leave empty for default name)")
 
-	OverrideNameCheckBox = vgui.Create("DCheckBoxLabel")
-	OverrideNameCheckBox:SetText("Override entity's name")
-	OverrideNameCheckBox:SizeToContents()
-	OverrideNameCheckBox:SetTextColor(Color(0, 0, 0))
-	OverrideNameCheckBox:SetChecked(true)
-	function OverrideNameCheckBox:OnChange(val)
-		OverrideNameText:SetEnabled(val)
-	end
+	dataTextEntry = vgui.Create("DTextEntry")
+	dataTextEntry:SetMultiline(true)
+	dataTextEntry:SetPlaceholderText("Enter custom data.")
+	dataTextEntry:SetSize(100, 100)
 
-	textEntry = vgui.Create("DTextEntry")
-	textEntry:SetMultiline(true)
-	textEntry:SetPlaceholderText("Enter custom data")
-	textEntry:SetSize(100, 100)
+	local holomatterLabel = vgui.Create("DLabel")
+	holomatterLabel:SetText("Holomatter:")
+	holomatterLabel:SetTextColor(Color(0, 0, 0))
 
-	ChangeScanDataCheckBox = vgui.Create("DCheckBoxLabel")
-	ChangeScanDataCheckBox:SetText("Set custom scan data")
-	ChangeScanDataCheckBox:SizeToContents()
-	ChangeScanDataCheckBox:SetTextColor(Color(0, 0, 0))
-	ChangeScanDataCheckBox:SetChecked(true)
-	function ChangeScanDataCheckBox:OnChange(val)
-		textEntry:SetEnabled(val)
-	end
+	holomatterComboBox = vgui.Create("DComboBox")
+	holomatterComboBox:AddChoice("Normal Matter")
+	holomatterComboBox:AddChoice("Replicated")
+	holomatterComboBox:AddChoice("Holomatter")
+	holomatterComboBox:ChooseOptionID(1)
 
-	OverrideHolomatterLabel = vgui.Create("DLabel")
-	OverrideHolomatterLabel:SetText("Holomatter:")
-	OverrideHolomatterLabel:SetTextColor(Color(0, 0, 0))
-
-	OverrideHolomatterComboBox = vgui.Create("DComboBox")
-	OverrideHolomatterComboBox:AddChoice("Unchange")
-	OverrideHolomatterComboBox:AddChoice("Make Holomatter")
-	OverrideHolomatterComboBox:AddChoice("Make Normal Matter")
-	OverrideHolomatterComboBox:ChooseOptionID(1)
-
-	self:AddItem(OverrideNameCheckBox)
-	self:AddItem(OverrideNameText)
-	self:AddItem(ChangeScanDataCheckBox)
-	self:AddItem(textEntry)
-	self:AddItem(OverrideHolomatterLabel)
-	self:AddItem(OverrideHolomatterComboBox)
+	self:AddItem(nameTextEntry)
+	self:AddItem(dataTextEntry)
+	self:AddItem(holomatterLabel)
+	self:AddItem(holomatterComboBox)
 end

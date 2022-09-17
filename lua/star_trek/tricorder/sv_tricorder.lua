@@ -65,11 +65,11 @@ function Star_Trek.Tricorder:AnalyseScanData(ent, owner, scanData)
 		Star_Trek.Logs:AddEntry(ent, owner, "Equipment:", nil, TEXT_ALIGN_LEFT)
 
 		for _, weapon in ipairs(scanData.Weapons) do
-			local color
+			local weaponColor
 			if weapon.HoloMatter then
-				color = Star_Trek.LCARS.ColorLightBlue
+				weaponColor = Star_Trek.LCARS.ColorLightBlue
 			end
-			Star_Trek.Logs:AddEntry(ent, owner, weapon.Name, color, TEXT_ALIGN_RIGHT)
+			Star_Trek.Logs:AddEntry(ent, owner, weapon.Name, weaponColor, TEXT_ALIGN_RIGHT)
 		end
 	end
 
