@@ -33,7 +33,7 @@ if CLIENT then
 
 	language.Add("tool.scanner_data.name", "Scanner Data-Tool")
 	language.Add("tool.scanner_data.desc", "Allows setting custom text and custom name onto an entity for retrieval using a tricorder.")
-	language.Add("tool.scanner_data.left", "Set Data")
+	language.Add("tool.scanner_data.left", "Set Data (Hold alt to target self)")
 	language.Add("tool.scanner_data.right", "Copy Data")
 	language.Add("tool.scanner_data.reload", "Delete Data")
 
@@ -65,7 +65,7 @@ if CLIENT then
 		local overrideName = nameTextEntry:GetText()
 		local data = dataTextEntry:GetText()
 		local holomatter = holomatterComboBox:GetSelectedID()
-		
+
 		if ent:IsPlayer() then
 			if holomatter == 3 then
 				notification.AddLegacy( "A player cannot be a hologram", NOTIFY_ERROR, 3 )
@@ -145,11 +145,15 @@ end
 function TOOL:LeftClick(tr)
 	if (CLIENT) then return true end
 
-	local ent = tr.Entity
-	if not IsValid(ent) then return true end
-
 	local owner = self:GetOwner()
 	if not IsValid(owner) then return true end
+
+	local ent = tr.Entity
+	if owner:KeyDown(IN_WALK) then
+		ent = owner
+	end
+
+	if not IsValid(ent) then return true end
 
 	net.Start("Scanner_Data.SetData")
 		net.WriteEntity(ent)
