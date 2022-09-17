@@ -200,10 +200,6 @@ function TOOL:BuildCPanel()
 	dataTextEntry:SetPlaceholderText("Enter custom data.")
 	dataTextEntry:SetSize(100, 100)
 
-	local holomatterLabel = vgui.Create("DLabel")
-	holomatterLabel:SetText("Holomatter:")
-	holomatterLabel:SetTextColor(Color(0, 0, 0))
-
 	holomatterComboBox = vgui.Create("DComboBox")
 	holomatterComboBox:AddChoice("Normal Matter")
 	holomatterComboBox:AddChoice("Replicated")
@@ -212,6 +208,5 @@ function TOOL:BuildCPanel()
 
 	self:AddItem(nameTextEntry)
 	self:AddItem(dataTextEntry)
-	self:AddItem(holomatterLabel)
 	self:AddItem(holomatterComboBox)
 end
