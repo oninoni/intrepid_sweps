@@ -48,8 +48,6 @@ if CLIENT then
 		local tool = ply:GetTool("scanner_data")
 		if not istable(tool) then return end
 
-		print(overrideName, data, holomatter)
-
 		nameTextEntry:SetText(overrideName or "")
 		dataTextEntry:SetText(data or "")
 		holomatterComboBox:ChooseOptionID(holomatter or 1)
@@ -67,7 +65,6 @@ if CLIENT then
 		local overrideName = nameTextEntry:GetText()
 		local data = dataTextEntry:GetText()
 		local holomatter = holomatterComboBox:GetSelectedID()
-		print(holomatter)
 
 		net.Start("Scanner_Data.SetData")
 			net.WriteEntity(ent)
@@ -86,8 +83,6 @@ if SERVER then
 		local overrideName = net.ReadString()
 		local data = net.ReadString()
 		local holomatter = net.ReadUInt(2)
-
-		print(holomatter)
 
 		if overrideName == "" then
 			ent.OverrideName = nil
@@ -111,7 +106,6 @@ if SERVER then
 			ent.HoloMatter = true
 		end
 
-		print(ent.HoloMatter, ent.Replicated)
 	end)
 
 	-- Read Custom Data from entity.
@@ -165,8 +159,6 @@ function TOOL:RightClick(tr)
 	elseif ent.HoloMatter then
 		matterId = 3
 	end
-
-	print(ent.OverrideName, ent.ScannerData, matterId)
 
 	net.Start("Scanner_Data.GetData")
 		net.WriteString(ent.OverrideName or "")
