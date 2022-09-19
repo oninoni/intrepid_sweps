@@ -33,9 +33,9 @@ if CLIENT then
 
 	language.Add("tool.scanner_data.name", "Scanner Data-Tool")
 	language.Add("tool.scanner_data.desc", "Allows setting custom text and custom name onto an entity for retrieval using a tricorder.")
-	language.Add("tool.scanner_data.left", "Set Data")
-	language.Add("tool.scanner_data.right", "Copy Data")
-	language.Add("tool.scanner_data.reload", "Delete Data")
+	language.Add("tool.scanner_data.left", "Set Data (Hold alt to target self)")
+	language.Add("tool.scanner_data.right", "Copy Data (Hold alt to target self)")
+	language.Add("tool.scanner_data.reload", "Delete Data (Hold alt to target self)")
 
 	net.Receive("Scanner_Data.GetData", function(len)
 		local overrideName = net.ReadString()
@@ -47,8 +47,6 @@ if CLIENT then
 
 		local tool = ply:GetTool("scanner_data")
 		if not istable(tool) then return end
-
-		print(overrideName, data, holomatter)
 
 		nameTextEntry:SetText(overrideName or "")
 		dataTextEntry:SetText(data or "")
@@ -67,7 +65,21 @@ if CLIENT then
 		local overrideName = nameTextEntry:GetText()
 		local data = dataTextEntry:GetText()
 		local holomatter = holomatterComboBox:GetSelectedID()
-		print(holomatter)
+
+		if ent:IsPlayer() then
+			if holomatter == 3 then
+				notification.AddLegacy( "A player cannot be a hologram", NOTIFY_ERROR, 3 )
+				surface.PlaySound( "buttons/button10.wav" )
+			elseif holomatter == 2 then
+				notification.AddLegacy( "A player cannot be replicated", NOTIFY_ERROR, 3 )
+				surface.PlaySound( "buttons/button10.wav" )
+			end
+		end
+
+		if (ent:IsNPC() or ent:IsNextBot()) and holomatter == 2 then
+			notification.AddLegacy( "An NPC cannot be replicated", NOTIFY_ERROR, 3 )
+			surface.PlaySound( "buttons/button10.wav" )
+		end
 
 		net.Start("Scanner_Data.SetData")
 			net.WriteEntity(ent)
@@ -87,8 +99,6 @@ if SERVER then
 		local data = net.ReadString()
 		local holomatter = net.ReadUInt(2)
 
-		print(holomatter)
-
 		if overrideName == "" then
 			ent.OverrideName = nil
 		else
@@ -100,10 +110,10 @@ if SERVER then
 			ent.ScannerData = data
 		end
 
-		if holomatter == 1 or ent:IsPlayer() or ent:IsNPC() or ent:IsNextBot() then
+		if holomatter == 1 or ent:IsPlayer() then
 			ent.HoloMatter = nil
 			ent.Replicated = nil
-		elseif holomatter == 2 then
+		elseif holomatter == 2 and not ent:IsNPC() and not ent:IsNextBot() then
 			ent.Replicated = true
 			ent.HoloMatter = nil
 		elseif holomatter == 3 then
@@ -111,7 +121,6 @@ if SERVER then
 			ent.HoloMatter = true
 		end
 
-		print(ent.HoloMatter, ent.Replicated)
 	end)
 
 	-- Read Custom Data from entity.
@@ -136,11 +145,15 @@ end
 function TOOL:LeftClick(tr)
 	if (CLIENT) then return true end
 
-	local ent = tr.Entity
-	if not IsValid(ent) then return true end
-
 	local owner = self:GetOwner()
 	if not IsValid(owner) then return true end
+
+	local ent = tr.Entity
+	if owner:KeyDown(IN_WALK) then
+		ent = owner
+	end
+
+	if not IsValid(ent) then return true end
 
 	net.Start("Scanner_Data.SetData")
 		net.WriteEntity(ent)
@@ -153,11 +166,15 @@ end
 function TOOL:RightClick(tr)
 	if (CLIENT) then return true end
 
-	local ent = tr.Entity
-	if not IsValid(ent) then return true end
-
 	local owner = self:GetOwner()
 	if not IsValid(owner) then return true end
+
+	local ent = tr.Entity
+	if owner:KeyDown(IN_WALK) then
+		ent = owner
+	end
+
+	if not IsValid(ent) then return true end
 
 	local matterId = 1
 	if ent.Replicated then
@@ -165,8 +182,6 @@ function TOOL:RightClick(tr)
 	elseif ent.HoloMatter then
 		matterId = 3
 	end
-
-	print(ent.OverrideName, ent.ScannerData, matterId)
 
 	net.Start("Scanner_Data.GetData")
 		net.WriteString(ent.OverrideName or "")
@@ -181,7 +196,14 @@ end
 function TOOL:Reload(tr)
 	if (CLIENT) then return true end
 
+	local owner = self:GetOwner()
+	if not IsValid(owner) then return true end
+
 	local ent = tr.Entity
+	if owner:KeyDown(IN_WALK) then
+		ent = owner
+	end
+
 	if not IsValid(ent) then return true end
 
 	ent.OverrideName = nil
@@ -208,10 +230,6 @@ function TOOL:BuildCPanel()
 	dataTextEntry:SetPlaceholderText("Enter custom data.")
 	dataTextEntry:SetSize(100, 100)
 
-	local holomatterLabel = vgui.Create("DLabel")
-	holomatterLabel:SetText("Holomatter:")
-	holomatterLabel:SetTextColor(Color(0, 0, 0))
-
 	holomatterComboBox = vgui.Create("DComboBox")
 	holomatterComboBox:AddChoice("Normal Matter")
 	holomatterComboBox:AddChoice("Replicated")
@@ -220,6 +238,5 @@ function TOOL:BuildCPanel()
 
 	self:AddItem(nameTextEntry)
 	self:AddItem(dataTextEntry)
-	self:AddItem(holomatterLabel)
 	self:AddItem(holomatterComboBox)
 end
