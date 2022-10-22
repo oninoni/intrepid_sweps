@@ -22,4 +22,3 @@ Star_Trek.Modules = Star_Trek.Modules or {}
 Star_Trek.Modules["lcars_swep"] = true
 Star_Trek.Modules["tricorder"] = true
 Star_Trek.Modules["padd"] = true
---Star_Trek.Modules["padd_damage"] = true
