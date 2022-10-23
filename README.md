@@ -10,3 +10,7 @@ Currently NOT Released since it is higly Experimental.
 
 Models Used are packaged into this content pack. Will be released as seperate pack, when this addon is released on the workshop:
 - https://steamcommunity.com/sharedfiles/filedetails/?id=2610547944
+
+Trello Board:
+
+https://trello.com/b/OXe7kwID/star-trek-modules
