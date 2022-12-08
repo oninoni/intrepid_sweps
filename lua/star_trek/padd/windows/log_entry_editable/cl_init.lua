@@ -53,7 +53,7 @@ function SELF:ProcessText(lines)
 
 	local totalCharacters = 0
 	for i, line in pairs(self.Lines) do
-		if i <= 8 then continue end
+		if i < 8 then continue end
 
 		local charCount = #line.Text
 
@@ -71,21 +71,19 @@ function SELF:OnDraw(pos, animPos)
 
 	if not self.Editing then return end
 
-	local caretPos = self.CaretPos
+	local caretPos = self.CaretPos + 1
 	if isnumber(caretPos) then
 		for i, line in pairs(self.Lines) do
-			local y = self.Offset + i * self.TextHeight
-
-			if i <= 8 then continue end
+			if i < 8 then continue end
 
 			local caretCharPos = caretPos - line.First
-
 			if caretCharPos >= 0 and caretCharPos <= #line.Text then
 				surface.SetFont(self.TextFont)
 
 				local subString = string.sub(line.Text, 1, caretCharPos)
-				local x = surface.GetTextSize(subString)
 
+				local x = surface.GetTextSize(subString)
+				local y = self.Area1Y + self.Offset + i * self.TextHeight
 				draw.RoundedBox(0, self.Area1X + x + 4, y - self.TextHeight - 4, 2, self.TextHeight, color_white)
 			end
 		end

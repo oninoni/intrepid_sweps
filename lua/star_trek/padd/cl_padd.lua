@@ -37,6 +37,8 @@ function Star_Trek.PADD:EnableEditing(window)
 		end
 	end
 
+	PrintTable(previousTextTable)
+
 	self.Panel = vgui.Create("DTextEntry")
 	self.Panel:SetSize(ScrW(), ScrH())
 	self.Panel:SetCursor("blank")
@@ -67,9 +69,9 @@ function Star_Trek.PADD:EnableEditing(window)
 	end
 
 	function self.Panel:Think()
-		local caretPos = self:GetCaretPos()
-		if Star_Trek.PADD.LastCaretPos ~= caretPos then
-			Star_Trek.PADD.LastCaretPos = caretPos
+		local currentCaretPos = self:GetCaretPos()
+		if Star_Trek.PADD.LastCaretPos ~= currentCaretPos then
+			Star_Trek.PADD.LastCaretPos = currentCaretPos
 
 			local lines = table.Copy(window.Lines)
 			window:ProcessText(lines)
