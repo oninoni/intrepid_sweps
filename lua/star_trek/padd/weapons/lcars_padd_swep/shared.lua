@@ -68,7 +68,7 @@ SWEP.MenuScale = 90
 SWEP.MenuWidth = 450
 SWEP.MenuHeight = 565
 SWEP.MenuName = "PADD"
-SWEP.MenuMouseOffset = Vector(370, 60, 0)
+SWEP.MenuMouseOffset = Vector(1500, 500, 0)
 SWEP.MenuSolid = false
 
 SWEP.Modes = {
