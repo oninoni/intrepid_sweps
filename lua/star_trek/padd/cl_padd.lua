@@ -37,8 +37,6 @@ function Star_Trek.PADD:EnableEditing(window)
 		end
 	end
 
-	PrintTable(previousTextTable)
-
 	self.Panel = vgui.Create("DTextEntry")
 	self.Panel:SetSize(ScrW(), ScrH())
 	self.Panel:SetCursor("blank")
