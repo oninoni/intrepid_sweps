@@ -16,25 +16,6 @@
 --        LCARS SWEP | Server        --
 ---------------------------------------
 
-util.AddNetworkString("Star_Trek.LCARS_SWEP.EnableScreenClicker")
-function Star_Trek.LCARS_SWEP:SetScreenClicker(ply, enabled, showCursor)
-	if enabled == (self.ScreenClickerEnabled or false) then
-		return
-	end
-
-	self.ScreenClickerEnabled = enabled
-	net.Start("Star_Trek.LCARS_SWEP.EnableScreenClicker")
-		net.WriteBool(enabled)
-		net.WriteBool(showCursor or false)
-	net.Send(ply)
-end
-
-function Star_Trek.LCARS_SWEP:ToggleScreenClicker(ply, showCursor)
-	local enabled = self.ScreenClickerEnabled or false
-
-	self:SetScreenClicker(ply, not enabled, showCursor)
-end
-
 hook.Add("Star_Trek.LCARS.OpenInterface", "Star_Trek.LCARS_SWEP.UpdateScreenClicker",  function(interfaceData, ply)
 	local ent = interfaceData.Ent
 
@@ -50,19 +31,19 @@ end)
 
 hook.Add("Star_Trek.LCARS.PostCloseInterface", "Star_Trek.LCARS_SWEP.UpdateScreenClicker", function(ent)
 	if ent.IsLCARS then
-		Star_Trek.LCARS_SWEP:SetScreenClicker(ent:GetOwner(), false)
+		Star_Trek.LCARS:SetScreenClicker(ent:GetOwner(), false)
 	end
 end)
 
 hook.Add("PlayerDroppedWeapon", "Star_Trek.LCARS_SWEP.ResetScreenClicker", function(ply, weapon)
 	if weapon.IsLCARS then
-		Star_Trek.LCARS_SWEP:SetScreenClicker(ply, false)
+		Star_Trek.LCARS:SetScreenClicker(ply, false)
 	end
 end)
 
 hook.Add("PlayerSwitchWeapon", "Star_Trek.LCARS_SWEP.ResetScreenClicker", function(ply, weapon)
 	if weapon.IsLCARS then
-		Star_Trek.LCARS_SWEP:SetScreenClicker(ply, false)
+		Star_Trek.LCARS:SetScreenClicker(ply, false)
 	end
 end)
 
@@ -70,7 +51,7 @@ hook.Add("KeyPress", "Star_Trek.LCARS_SWEP.ResetScreenClicker", function(ply, ke
 	if key == IN_SCORE then
 		local weapon = ply:GetActiveWeapon()
 		if weapon.IsLCARS then
-			Star_Trek.LCARS_SWEP:SetScreenClicker(ply, false)
+			Star_Trek.LCARS:SetScreenClicker(ply, false)
 		end
 	end
 end)
@@ -79,7 +60,7 @@ hook.Add("KeyRelease", "Star_Trek.LCARS_SWEP.ResetScreenClicker", function(ply, 
 	if key == IN_SCORE then
 		local weapon = ply:GetActiveWeapon()
 		if weapon.IsLCARS then
-			Star_Trek.LCARS_SWEP:SetScreenClicker(ply, false)
+			Star_Trek.LCARS:SetScreenClicker(ply, false)
 		end
 	end
 end)
