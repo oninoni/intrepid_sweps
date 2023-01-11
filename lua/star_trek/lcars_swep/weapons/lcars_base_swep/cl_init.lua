@@ -69,7 +69,7 @@ function SWEP:DrawViewModelCustom(flags)
 				render.OverrideBlend(true, BLEND_SRC_ALPHA, BLEND_ONE, BLENDFUNC_ADD, BLEND_SRC_ALPHA, BLEND_ONE, BLENDFUNC_ADD)
 			end
 
-			Star_Trek.LCARS:DrawWindow(window, interface.AnimPos, not interface.Closing and IsValid(Star_Trek.LCARS_SWEP.Panel))
+			Star_Trek.LCARS:DrawWindow(window, interface.AnimPos, not interface.Closing and IsValid(Star_Trek.LCARS.Panel))
 		end
 
 		render.OverrideBlend(false)

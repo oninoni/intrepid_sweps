@@ -21,7 +21,7 @@ hook.Add("Star_Trek.LCARS.OpenInterface", "Star_Trek.LCARS_SWEP.UpdateScreenClic
 
 	if ent.IsLCARS then
 		if interfaceData.AutoClicker then
-			Star_Trek.LCARS_SWEP:SetScreenClicker(ent:GetOwner(), true)
+			Star_Trek.LCARS:SetScreenClicker(ent:GetOwner(), false)
 		end
 
 		interfaceData.Solid = ent.MenuSolid

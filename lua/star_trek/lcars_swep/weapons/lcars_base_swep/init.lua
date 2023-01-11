@@ -46,7 +46,7 @@ function SWEP:Reload()
 	if (self.LastReload + 0.1) < CurTime() then
 		local interfaceData = Star_Trek.LCARS.ActiveInterfaces[self]
 		if istable(interfaceData) then
-			Star_Trek.LCARS:ToggleScreenClicker(owner)
+			Star_Trek.LCARS:ToggleScreenClicker(owner, false)
 		else
 			Star_Trek.LCARS:OpenInterface(self:GetOwner(), self, "mode_selection", self.Modes)
 		end
