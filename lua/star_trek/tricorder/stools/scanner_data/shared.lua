@@ -91,6 +91,31 @@ if CLIENT then
 end
 
 if SERVER then
+	function Star_Trek.Tricorder:ApplyOnEntityCopyTableFinish(ent)
+		if ent.OriginalOnEntityCopyTableFinish then
+			if isfunction(ent.OnEntityCopyTableFinish) then
+				ent.OriginalOnEntityCopyTableFinish = ent.OnEntityCopyTableFinish
+			end
+		else
+			-- Prevent Recursion
+			ent.OriginalOnEntityCopyTableFinish = true
+		end
+
+		ent.OnEntityCopyTableFinish = function(dupeEnt, entTable)
+			if isfunction(dupeEnt.OriginalOnEntityCopyTableFinish) then
+				pcall(dupeEnt.OriginalOnEntityCopyTableFinish, dupeEnt, entTable)
+				if (not status) then
+					print("Scanner Data Tool OriginalOnEntityCopyTableFinish Error: " .. tostring(valid))
+				end
+			end
+
+			entTable.OverrideName = dupeEnt.OverrideName
+			entTable.ScannerData = dupeEnt.ScannerData
+			entTable.HoloMatter	= dupeEnt.HoloMatter
+			entTable.Replicated	= dupeEnt.Replicated
+		end
+	end
+
 	util.AddNetworkString("Scanner_Data.GetData")
 	util.AddNetworkString("Scanner_Data.SetData")
 	net.Receive("Scanner_Data.SetData", function(len, ply)
@@ -121,6 +146,37 @@ if SERVER then
 			ent.HoloMatter = true
 		end
 
+		Star_Trek.Tricorder:ApplyOnEntityCopyTableFinish(ent)
+	end)
+
+	function Star_Trek.Tricorder:ApplyOnDuplicated(ent)
+		if ent.OriginalOnDuplicated then
+			if isfunction(ent.OnDuplicated) then
+				ent.OriginalOnDuplicated = ent.OnDuplicated
+			end
+		else
+			-- Prevent Recursion
+			ent.OriginalOnDuplicated = true
+		end
+
+		ent.OnDuplicated = function(dupeEnt, entTable)
+			if isfunction(dupeEnt.OriginalOnDuplicated) then
+				pcall(dupeEnt.OriginalOnDuplicated, dupeEnt, entTable)
+				if (not status) then
+					print("Scanner Data Tool OriginalOnDuplicated Error: " .. tostring(valid))
+				end
+			end
+
+			dupeEnt.OverrideName = entTable.OverrideName
+			dupeEnt.ScannerData = entTable.ScannerData
+			dupeEnt.HoloMatter	= entTable.HoloMatter
+			dupeEnt.Replicated	= entTable.Replicated
+		end
+	end
+
+	-- The most hacky solution of them all.
+	hook.Add("OnEntityCreated", "Star_Trek.Tricorder.OverrideOnDuplicated", function(ent)
+		Star_Trek.Tricorder:ApplyOnDuplicated(ent)
 	end)
 
 	-- Read Custom Data from entity.
