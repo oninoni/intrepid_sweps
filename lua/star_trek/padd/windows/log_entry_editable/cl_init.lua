@@ -80,7 +80,7 @@ function SELF:OnDraw(pos, animPos)
 			if caretCharPos >= 0 and caretCharPos <= #line.Text then
 				surface.SetFont(self.TextFont)
 
-				local subString = string.sub(line.Text, 1, caretCharPos)
+				local subString = string.sub(line.Text, 1, utf8.offset(line.Text, caretCharPos))
 
 				local x = surface.GetTextSize(subString)
 				local y = self.Area1Y + self.Offset + i * self.TextHeight
