@@ -53,9 +53,9 @@ function SELF:ProcessText(lines)
 
 	local totalCharacters = 0
 	for i, line in pairs(self.Lines) do
-		if i < 8 then continue end
+		if i < 9 then continue end
 
-		local charCount = #line.Text
+		local charCount = utf8.len(line.Text)
 
 		line.First = totalCharacters
 		totalCharacters = totalCharacters + charCount + 1
@@ -71,16 +71,23 @@ function SELF:OnDraw(pos, animPos)
 
 	if not self.Editing then return end
 
-	local caretPos = self.CaretPos + 1
+	local caretPos = self.CaretPos
 	if isnumber(caretPos) then
 		for i, line in pairs(self.Lines) do
-			if i < 8 then continue end
+			if i < 9 then continue end
 
 			local caretCharPos = caretPos - line.First
-			if caretCharPos >= 0 and caretCharPos <= #line.Text then
+			if caretCharPos >= 0 and caretCharPos <= utf8.len(line.Text) then
 				surface.SetFont(self.TextFont)
 
-				local subString = string.sub(line.Text, 1, utf8.offset(line.Text, caretCharPos))
+				local offsetCaretCharPos = utf8.offset(line.Text, caretCharPos)
+				if offsetCaretCharPos == nil then
+					offsetCaretCharPos = #line.Text
+				else
+					offsetCaretCharPos = offsetCaretCharPos - 1
+				end
+
+				local subString = string.sub(line.Text, 1, offsetCaretCharPos)
 
 				local x = surface.GetTextSize(subString)
 				local y = self.Area1Y + self.Offset + i * self.TextHeight
