@@ -53,7 +53,7 @@ hook.Add("Star_Trek.LCARS.GetMouseOffset", "Star_Trek.LCARS_SWEP.OverrideMouseOf
 	end
 end)
 
-hook.Add("Star_Trek.LCARS.MouseActive", Star_Trek.LCARS_SWEP.OverrideMouseActive, function(window)
+hook.Add("Star_Trek.LCARS.MouseActive", "Star_Trek.LCARS_SWEP.OverrideMouseActive", function(window, pos)
 	local interface = window.Interface
 	local ent = interface.Ent
 
