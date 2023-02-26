@@ -53,17 +53,16 @@ hook.Add("Star_Trek.LCARS.GetMouseOffset", "Star_Trek.LCARS_SWEP.OverrideMouseOf
 	end
 end)
 
-hook.Add("Star_Trek.LCARS.Get3D2DMousePos", "Star_Trek.LCARS_SWEP.OverrideGet3D2DMousePos", function(window, pos)
+hook.Add("Star_Trek.LCARS.MouseActive", Star_Trek.LCARS_SWEP.OverrideMouseActive, function(window)
 	local interface = window.Interface
 	local ent = interface.Ent
 
 	if IsValid(ent) and ent:IsWeapon() and ent.IsLCARS then
-		local scale = ent.CustomWorldModelScale
-		if ent.IsViewModelRendering then
-			scale = ent.CustomViewModelScale
+		if IsValid(Star_Trek.LCARS.Panel) then
+			return true
+		else
+			return false
 		end
-
-		return pos / scale
 	end
 end)
 
@@ -97,6 +96,6 @@ hook.Add("HUDPaint", "Star_Trek.LCARS_SWEP.HUDPaint", function()
 	local ply = LocalPlayer()
 	local wep = ply:GetActiveWeapon()
 	if IsValid(wep) and wep.IsLCARS then
-		draw.DrawText(wep.Instructions, "LCARSMed", w / 2, 10, color_white, TEXT_ALIGN_CENTER)
+		draw.DrawText(wep.Instructions, "LCARSBig", w / 2, 20, color_white, TEXT_ALIGN_CENTER)
 	end
 end)
