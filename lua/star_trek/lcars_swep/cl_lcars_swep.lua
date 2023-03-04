@@ -54,15 +54,13 @@ hook.Add("Star_Trek.LCARS.GetMouseOffset", "Star_Trek.LCARS_SWEP.OverrideMouseOf
 end)
 
 hook.Add("Star_Trek.LCARS.MouseActive", "Star_Trek.LCARS_SWEP.OverrideMouseActive", function(window, pos)
+	if not window.MouseActive then return end
+
 	local interface = window.Interface
 	local ent = interface.Ent
 
-	if IsValid(ent) and ent:IsWeapon() and ent.IsLCARS then
-		if IsValid(Star_Trek.LCARS.Panel) then
-			return true
-		else
-			return false
-		end
+	if IsValid(ent) and ent:IsWeapon() and ent.IsLCARS and not IsValid(Star_Trek.LCARS.Panel) then
+		return false
 	end
 end)
 
