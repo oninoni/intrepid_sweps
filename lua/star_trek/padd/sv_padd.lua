@@ -54,3 +54,10 @@ net.Receive("Star_Trek.PADD.UpdatePersonal", function(len, ply)
 	logWindow:SetSessionData(sessionData)
 	logWindow:Update()
 end)
+
+-- Disable editing when player dies, so the players input doesn't 'freeze'
+util.AddNetworkString("Star_Trek.PADD.DisableEditing")
+hook.Add("PlayerDeath", "Star_Trek.PADD.DisableEditing", function (ply)
+	net.Start("Star_Trek.PADD.DisableEditing")
+	net.Send(ply)
+end)
