@@ -93,3 +93,7 @@ function Star_Trek.PADD:DisableEditing()
 		self.Panel:Remove()
 	end
 end
+
+net.Receive("Star_Trek.PADD.DisableEditing", function (len, ply)
+	Star_Trek.PADD:DisableEditing()
+end)
